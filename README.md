@@ -6,7 +6,7 @@ apache2buddy.pl => https://raw.githubusercontent.com/richardforth/apache2buddy/m
 
 This allows one to execute it on the server easily with
 
-	# curl -sL apache2buddy.pl | perl
+	# curl -sL http://apache2buddy.pl | perl
 
 Notes on the curl & perl method:
 
