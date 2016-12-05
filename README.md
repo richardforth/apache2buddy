@@ -44,13 +44,13 @@ Example:
 
         # apache has its own domain 'apache2buddy.pl' this saves typing out 'https://raw.githubusercontent.com/richardforth/apache2buddy/master/apache2buddy.pl'
         scriptmd5sum=`curl -sL apache2buddy.pl | md5sum | cut -d " " -f1`
-        originmd5sum=`curl -s https://raw.githubusercontent.com/richardforth/apache2buddy/master/md5sums.txt | cut -d " " -f1`
+        originmd5sum=`curl -s https://cdn.rawgit.com/richardforth/apache2buddy/master/md5sums.txt | cut -d " " -f1`
         echo $scriptmd5sum
         echo $originmd5sum
         if [ $scriptmd5sum == $originmd5sum ]
         then
                 scriptsha256sum=`curl -sL apache2buddy.pl | sha256sum | cut -d " " -f1`
-                originsha256sum=`curl -s https://raw.githubusercontent.com/richardforth/apache2buddy/master/sha256sums.txt | cut -d " " -f1`
+                originsha256sum=`curl -s https://cdn.rawgit.com/richardforth/apache2buddy/master/sha256sums.txt | cut -d " " -f1`
                 echo $scriptsha256sum
                 echo $originsha256sum
                 if [ $scriptsha256sum == $originsha256sum ]
