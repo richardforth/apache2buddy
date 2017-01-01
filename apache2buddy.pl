@@ -1340,7 +1340,11 @@ sub preflight_checks {
 	        	$os_name = `cat /etc/redhat-release 2>&1 | head -1 | awk '{ print \$1 " " \$2 }'`;
                 	chomp ($os_name);
                 	$os_release = `cat /etc/redhat-release 2>&1 | head -1 | awk '{ print \$3 }'`;
-        	} else {
+       		 } elsif ( $os_name  eq "Fedora" ) {
+                        $os_name = `cat /etc/redhat-release 2>&1 | head -1 | awk '{ print \$1 " " \$2 }'`;
+                        chomp ($os_name);
+                        $os_release = `cat /etc/redhat-release 2>&1 | head -1 | awk '{ print \$3 }'`;
+                } else {
 			show_crit_box();
 	               	print ("Either we couldnt get the OS name, or its not a supported distro.\n");
 			exit;
