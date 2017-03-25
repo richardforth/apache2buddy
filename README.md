@@ -2,7 +2,7 @@
 
 ## old method:
 
-	# curl -sL apache2buddy.pl | perl
+	# curl -sL http://apache2buddy.pl | perl
 
 ## new method:
 
