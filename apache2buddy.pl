@@ -1757,6 +1757,8 @@ sub preflight_checks {
 				# it could be in a couple of places, so lets test!
 				if (-f "/var/run/httpd/httpd.pid") {
 					our $pidfile = "/var/run/httpd/httpd.pid";
+				} elsif (-f "/run/httpd/httpd.pid") {
+					our $pidfile = "/run/httpd/httpd.pid";
 				} elsif (-f "/var/run/httpd.pid") {
 					our $pidfile = "/var/run/httpd.pid";
 				} else {
@@ -1774,6 +1776,8 @@ sub preflight_checks {
 				if ($VERBOSE) { print "VERBOSE: Looking for pid file ...\n" }
                                 if ( -d "/var/run/apache2") {
                                         our $pidguess = `find /var/run/apache2 | grep pid`;
+                                } elsif ( -d "/run/httpd") {
+                                        our $pidguess = `find /run/httpd | grep pid`;
                                 } elsif ( -d "/var/run/httpd") {
                                         our $pidguess = `find /var/run/httpd | grep pid`;
                                 } else {
