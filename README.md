@@ -6,7 +6,7 @@
 
 ## new method:
 
-	# curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/master/apache2buddy.pl | perl
+	# curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/master/apache2buddy.pl | sudo perl
 
 # landing page
 
