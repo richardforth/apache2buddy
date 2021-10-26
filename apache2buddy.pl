@@ -986,6 +986,9 @@ sub test_process {
 	} elsif ( $process_name eq '/usr/sbin/apache2' ) {
 		@output = `LANGUAGE=en_GB.UTF-8 /usr/sbin/apache2ctl -V 2>&1 | grep "Server version"`;
 		print "VERBOSE: First line of output from \"/usr/sbin/apache2ctl -V\": $output[0]\n" if $main::VERBOSE;
+	} elsif ( $process_name eq '/usr/sbin/httpd-prefork' ) {
+		@output = `LANGUAGE=en_GB.UTF-8 /usr/sbin/apache2ctl -V 2>&1 | grep "Server version"`;
+		print "VERBOSE: First line of output from \"/usr/sbin/apache2ctl -V\": $output[0]\n" if $main::VERBOSE;
 	} elsif ( $process_name eq '/usr/local/apache/bin/httpd' ) {
 		if ( ! $NOWARN ) { show_warn_box(); print "${RED}Apache seems to have been installed from source, its technically unsupported, we may get errors${ENDC}\n" }
 		@output = `LANGUAGE=en_GB.UTF-8 $process_name -V 2>&1 | grep "Server version"`;
@@ -2446,6 +2449,8 @@ sub detect_maxclients_hits {
 		our $maxclients_hits = `grep -i reached /usr/local/apache/logs/error_log | egrep -v "mod" | tail -5`;
 	} elsif ($process_name eq "/opt/apache2/bin/httpd") {
 		our $maxclients_hits = `find /opt/apache2/logs -name "error*" | tail -1 | xargs grep -i reached | egrep -v "mod" | tail -5`;
+	} elsif ($process_name eq "/usr/sbin/httpd-prefork") {
+		our $maxclients_hits = `find /var/log/apache2 -name "error*" | tail -1 | xargs grep -i reached | egrep -v "mod" | tail -5`;
 	} else {
 		# general ToDo would be `'grep "^ErrorLog " $apache_conf_file'`;
 		# to get configuration like:
@@ -2870,3 +2875,4 @@ if ( $model eq "worker") {
 generate_standard_report($available_mem, $maxclients, $vhost_count, $apache_proc_lowest, $apache_proc_average, $apache_proc_highest, $model, $uptime, $threadsperchild, $mysql_memory_usage_mbytes, $java_memory_usage_mbytes, $redis_memory_usage_mbytes, $memcache_memory_usage_mbytes, $varnish_memory_usage_mbytes, $phpfpm_memory_usage_mbytes, $gluster_memory_usage_mbytes);
 
 show_important_message();
+
