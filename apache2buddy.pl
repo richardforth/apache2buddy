@@ -987,6 +987,9 @@ sub test_process {
 	} elsif ( $process_name eq '/usr/sbin/apache2' ) {
 		@output = `LANGUAGE=en_GB.UTF-8 /usr/sbin/apache2ctl -V 2>&1 | grep "Server version"`;
 		print "VERBOSE: First line of output from \"/usr/sbin/apache2ctl -V\": $output[0]\n" if $main::VERBOSE;
+    } elsif ( $process_name eq '/usr/sbin/httpd-prefork' ) {
+	    @output = `LANGUAGE=en_GB.UTF-8 /usr/sbin/apache2ctl -V 2>&1 | grep "Server version"`;
+       print "VERBOSE: First line of output from \"/usr/sbin/apache2ctl -V\": $output[0]\n" if $main::VERBOSE;
 	} elsif ( $process_name eq '/usr/local/apache/bin/httpd' ) {
 		if ( ! $NOWARN ) { show_warn_box(); print "${RED}Apache seems to have been installed from source, its technically unsupported, we may get errors${ENDC}\n" }
 		@output = `LANGUAGE=en_GB.UTF-8 $process_name -V 2>&1 | grep "Server version"`;
@@ -1886,7 +1889,7 @@ sub preflight_checks {
 			 $apache_user_config =~ s/^\s*(.*?)\s*$/$1/;; # address issue #19, strip whitespace from both sides.
 		}
 	}  
-	unless ($apache_user_config eq "apache" or $apache_user_config eq "www-data") {
+	unless ($apache_user_config eq "apache" or $apache_user_config eq "www-data" or ($apache_user_config eq "wwwrun" and $distro eq "SUSE Linux Enterprise Server")) {
                 my $apache_config_userid = `id -u $apache_user_config`;
                 chomp($apache_config_userid);
                 # account for 'apache\x{d}' strangeness
@@ -2447,6 +2450,8 @@ sub detect_maxclients_hits {
 		our $maxclients_hits = `grep -i reached /usr/local/apache/logs/error_log | egrep -v "mod" | tail -5`;
 	} elsif ($process_name eq "/opt/apache2/bin/httpd") {
 		our $maxclients_hits = `find /opt/apache2/logs -name "error*" | tail -1 | xargs grep -i reached | egrep -v "mod" | tail -5`;
+	} elsif ($process_name eq "/usr/sbin/httpd-prefork") {
+       our $maxclients_hits = `find /var/log/apache2 -name "error*" | tail -1 | xargs grep -i reached | egrep -v "mod" | tail -5`;
 	} else {
 		# general ToDo would be `'grep "^ErrorLog " $apache_conf_file'`;
 		# to get configuration like:

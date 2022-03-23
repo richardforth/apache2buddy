@@ -2,6 +2,9 @@ CHANGELOG
 
 When		Who		What
 ======================================================================================
+2021-11-03	Emil Cazamir	Added SuSE Linux v.12 compatibility 
+				Using httpd/apache2 running in prefork mode, tested 
+				with SLES 12 SP5
 2021-10-28	w4zu            Add support for Debian 11
 2021-02-22	Richard Forth   Added an important message about
 				Domain expiry and non renewal, and the risks
