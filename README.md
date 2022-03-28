@@ -1,3 +1,5 @@
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/richardforth/apache2buddy/graphs/commit-activity)
+
 [![GitHub latest commit](https://badgen.net/github/last-commit/richardforth/apache2buddy)](https://GitHub.com/richardforth/apache2buddy/commit/)
 
 [![GitHub stars](https://badgen.net/github/stars/richardforth/apache2buddy)](https://GitHub.com/richardforth/apache2buddy/stargazers/)
