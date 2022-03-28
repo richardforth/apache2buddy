@@ -9,6 +9,8 @@
 
 [![Generic badge](https://img.shields.io/badge/Centos8-Deprecated-yellow.svg)](https://shields.io/)
 
+[![Generic badge](https://img.shields.io/badge/RickyLinux8-Passing-Green.svg)](https://shields.io/)
+
 [![Generic badge](https://img.shields.io/badge/Debian9-Passing:%20EOL%20DATE%20June%2030%202022-yellow.svg)](https://shields.io/)
 
 [![Generic badge](https://img.shields.io/badge/Debian10-Passing-Green.svg)](https://shields.io/)
