@@ -7,9 +7,17 @@
 
 [![Generic badge](https://img.shields.io/badge/Scientific7-Passing-Green.svg)](https://shields.io/)
 
-[![Generic badge](https://img.shields.io/badge/Centos8-Passing-Green.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/Centos8-Deprecated-yellow.svg)](https://shields.io/)
+
+[![Generic badge](https://img.shields.io/badge/Debian9-Passing:%20EOL%20DATE%20June%2030%202022-yellow.svg)](https://shields.io/)
 
 [![Generic badge](https://img.shields.io/badge/Debian10-Passing-Green.svg)](https://shields.io/)
+
+[![Generic badge](https://img.shields.io/badge/Ubuntu1804-Passing-Green.svg)](https://shields.io/)
+
+[![Generic badge](https://img.shields.io/badge/Ubuntu2004-Passing-Green.svg)](https://shields.io/)
+
+The rule of thumb is if its not listed, its not supported.
 
 # execution
 
