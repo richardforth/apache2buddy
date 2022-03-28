@@ -3,19 +3,13 @@
 
 # Supported OSes
 
-[![Generic badge](https://img.shields.io/badge/Centos7-Passing-Green.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/Centos%207-Passing-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Scientific%207-Passing-Green.svg)](https://shields.io/)
 
-[![Generic badge](https://img.shields.io/badge/Scientific7-Passing-Green.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/Centos%208-Deprecated-yellow.svg)](https://shields.io/)  [![Generic badge](https://img.shields.io/badge/Rocky%20Linux%208-Passing-Green.svg)](https://shields.io/)
 
-[![Generic badge](https://img.shields.io/badge/Centos8-Deprecated-yellow.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/Debian%209-Passing:%20EOL%20DATE%20June%2030%202022-yellow.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Debian%2010-Passing-Green.svg)](https://shields.io/)
 
-[![Generic badge](https://img.shields.io/badge/Debian9-Passing:%20EOL%20DATE%20June%2030%202022-yellow.svg)](https://shields.io/)
-
-[![Generic badge](https://img.shields.io/badge/Debian10-Passing-Green.svg)](https://shields.io/)
-
-[![Generic badge](https://img.shields.io/badge/Ubuntu1804-Passing-Green.svg)](https://shields.io/)
-
-[![Generic badge](https://img.shields.io/badge/Ubuntu2004-Passing-Green.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/Ubuntu%2018.04-Passing-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Ubuntu%2020.04-Passing-Green.svg)](https://shields.io/)
 
 The rule of thumb is if its not listed, its not supported.
 
