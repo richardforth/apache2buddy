@@ -1,6 +1,14 @@
-[![GitHub latest commit](https://badgen.net/github/last-commit/richardforth/apache2buddy)](https://GitHub.com/richardforth/apache2buddy/commit/)
+# Status
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/richardforth/apache2buddy/graphs/commit-activity) [![GitHub latest commit](https://badgen.net/github/last-commit/richardforth/apache2buddy)](https://GitHub.com/richardforth/apache2buddy/commit/) [![GitHub stars](https://badgen.net/github/stars/richardforth/apache2buddy)](https://GitHub.com/richardforth/apache2buddy/stargazers/) [![Generic badge](https://img.shields.io/badge/Tests-Passing-Green.svg)](https://shields.io/)
 
-[![GitHub stars](https://badgen.net/github/stars/richardforth/apache2buddy)](https://GitHub.com/richardforth/apache2buddy/stargazers/)
+# Supported OSes
+
+[![Generic badge](https://img.shields.io/badge/Centos7-Passing-Green.svg)](https://shields.io/)
+
+[![Generic badge](https://img.shields.io/badge/Scientific7-Passing-Green.svg)](https://shields.io/)
+
+[![Generic badge](https://img.shields.io/badge/Centos8-Passing-Green.svg)](https://shields.io/)
+
 # execution
 
 	# curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/master/apache2buddy.pl | perl
