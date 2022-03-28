@@ -406,7 +406,7 @@ sub check_os_support {
 				'centos',
 				'Scientific Linux',
 				'Rocky Linux',
-				'Alma Linux',
+				'AlmaLinux',
 				'SUSE Linux Enterprise Server',
 				'SuSE');
 	my %sol = map { $_ => 1 } @supported_os_list;
@@ -449,7 +449,7 @@ sub check_os_support {
 				show_crit_box(); print "${RED} ERROR: This distro version (${CYAN}$version${ENDC}${RED}) is not supported by apache2buddy.pl.${ENDC}\n";
 				# list supported debian versions
 				if ( ! $NOINFO ) { show_advisory_box(); print "${YELLOW}Supported Debian versions:${ENDC} '${CYAN}" . join("${ENDC}', '${CYAN}", @debian_supported_versions) . "${ENDC}'. To run anyway (at your own risk), try -O or --skip-os-version-check.\n"}
-				exit;
+				exit 1;
 			}
 		} elsif  (exists($uol{$distro})) {
 			if (exists($usv{$version})) {
@@ -458,7 +458,7 @@ sub check_os_support {
 				show_crit_box(); print "${RED}ERROR: This distro version (${CYAN}$version${ENDC}${RED}) is not supported by apache2buddy.pl.${ENDC}\n";
 				# list supported debian versions
 				if ( ! $NOINFO ) { show_advisory_box(); print "${YELLOW}Supported Ubuntu (LTS ONLY) versions:${ENDC} '${CYAN}" . join("${ENDC}', '${CYAN}", @ubuntu_supported_versions) . "${ENDC}'. To run anyway (at your own risk), try -O or --skip-os-version-check.\n"}
-				exit;
+				exit 1;
 			}
 		} elsif (exists($rol{$distro})) {
 			# for red hat versions is not so clinical regarding the specific versions, however we need to be mindful of EOL versions eg RHEL 3, 4, 5, 6
@@ -475,7 +475,7 @@ sub check_os_support {
 			if ( $VERBOSE ) { print "VERBOSE -> Major RedHat Version Detected ". $major_redhat_version . "\n"}
 			if ($major_redhat_version lt 7 ) {
 				show_crit_box(); print "${RED}ERROR: This distro version (${CYAN}$version${ENDC}${RED}) is not supported by apache2buddy.pl.${ENDC}\n";
-				exit;
+				exit 1;
 			} else {
 				if ( ! $NOOK ) { show_ok_box(); print "This distro version is supported by apache2buddy.pl.\n" }
 			}
@@ -493,7 +493,7 @@ sub check_os_support {
 			if ( $VERBOSE ) { print "VERBOSE -> Major SUSE Version Detected ". $major_suse_version . "\n"}
 			if ($major_suse_version lt 12 ) {
 				show_crit_box(); print "${RED}ERROR: This distro version (${CYAN}$version${ENDC}${RED}) is not supported by apache2buddy.pl.${ENDC}\n";
-				exit;
+				exit 1;
 			} else {
 				if ( ! $NOOK ) { show_ok_box(); print "This distro version is supported by apache2buddy.pl.\n" }
 			}
@@ -502,7 +502,7 @@ sub check_os_support {
 		show_crit_box(); print "${RED}ERROR: This distro is not supported by apache2buddy.pl.${ENDC}\n";
 		# list supported OS distros
 		if ( ! $NOINFO ) { show_advisory_box(); print "${YELLOW}Supported Distro's:${ENDC} '${CYAN}" . join("${ENDC}', '${CYAN}", @supported_os_list) . "${ENDC}'. To run anyway (at your own risk), try -O or --skip-os-version-check.\n"}
-		exit;
+		exit 1;
 	}
 }
 
