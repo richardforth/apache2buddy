@@ -1,64 +1,10 @@
+[![GitHub latest commit](https://badgen.net/github/last-commit/richardforth/apache2buddy)](https://GitHub.com/richardforth/apache2buddy/commit/)
+
+[![GitHub stars](https://badgen.net/github/stars/richardforth/apache2buddy)](https://GitHub.com/richardforth/apache2buddy/stargazers/)
 # execution
-
-## old method:
-
-	# curl -sL ***redacted*** | perl
-
-
-## ** DOMAIN EXPIRY NOTICE **
-
-	There is no intention of renewing the domain:
-
-        	apache2buddy.pl
-
-	Please use extreme caution! Running arbirary
-	code as root is high risk and the domain
-	will not be associated with this code.
-
-	We took steps in 2018 to move the code to
-	github exclusively and have it run  from
-	there directly with curl and perl.
-
-
-
-## new method:
 
 	# curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/master/apache2buddy.pl | perl
 
-# landing page
-
-	########### IMPORTANT SAFETY ANNOUNCEMENT #################
-	
-	This is the NEW landing page for apache2buddy.pl
-	
-	Please don't curl and perl the domain any more.
-	
-	For security reasons, the following 
-	execution method will bring you to this page:
-	
-	  # curl -sL ***redacted*** | perl
-	
-	Instead please run / bookmark the following:
-	
-	  # curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/master/apache2buddy.pl | perl
-	  
-	This method is much safer.
-	
-	For more information on this change refer to the README.md:
-	https://github.com/richardforth/apache2buddy/blob/master/README.md
-	
-	Pay specific attention to the "Security Concerns" and 
-	"Typocamping is a thing and why you should be concerned" 
-	sections.
-	
-	If you still don't understand the dangers of typocamping, remember,
-	you just ran THIS script, on your server as root. Thankfully I am
-	a good guy.
-	
-	The domain will slowly be phased out and will eventually be released.
-	This landing page marks the start of that process. 
-	
-	############### END IMPORTANT SAFTEY ANNOUNCEMENT ##############
 
 # Best Practice
         
@@ -100,37 +46,6 @@ If the md5sums or sha256sums do not match, then changes have been made and its u
 - Compromised script could result in root level compromise of your server
 - Runaway processes doing not what they are supposed to (this actually happened in testing, thankfully all of the known exceptions have been caught)
 
-# Security concerns
-
-While I do everything I can to ensure the code is clean and free from harmful bugs, there is a risk of malware being run,
- for example "typocamping", therefore if you do curl and perl the domain, be sure to type it absolutely correctly.
-
-In order to mitigate the risks I am now urging you to curl and perl directly from github, like so:
-
-	# curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/master/apache2buddy.pl | perl
-
-This is a MUCH safer method than curling the domain, and making a typo and being left at the mercy of "typocampers".
-
-Any attempts going forward to curl and perl the domain, will give you the landing page above.
-
-# typo squatting  / camping is a thing, and why you should be concerned.
-
-First of all I am just a dude, with a github acount and enough money to keep one domain going. I don't have infinite wealth,
-so buying up all the different likely typo'ed versions of my domain, is impossible.  This is a concern if you are curling 
-and perling a domain, as root. can you see the problem if you ran "curl -sL ***redacted*** | perl" ? 
-
-Typo campers COULD take advantange of this and register a domain that is close to mine, in the vague hope of a typo that results
-in you hitting their site instead of mine, and what if THAT site contained a very malicious perl script?
-
-thats typocamping in a nutshell, and, for that reason, I want to stop using the domain, and phase it out.
-
-Supporting links:
-
-https://www.brandshield.com/typosquatting-ways-to-protect-your-brand/
-
-https://arstechnica.com/security/2016/06/college-student-schools-govs-and-mils-on-perils-of-arbitrary-code-execution/
-
-https://nakedsecurity.sophos.com/typosquatting/
 
 # Logging
 
