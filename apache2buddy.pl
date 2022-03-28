@@ -405,6 +405,7 @@ sub check_os_support {
 				'CentOS',
 				'centos',
 				'Scientific Linux',
+				'Rocky Linux',
 				'SUSE Linux Enterprise Server',
 				'SuSE');
 	my %sol = map { $_ => 1 } @supported_os_list;
@@ -415,18 +416,18 @@ sub check_os_support {
 	my @debian_os_list = ('Debian', 'debian');
 	my %dol = map { $_ => 1 } @debian_os_list;
 	
-	my @redhat_os_list = ('Red Hat Enterprise Linux', 'redhat', 'CentOS Linux', 'Scientific Linux');
+	my @redhat_os_list = ('Red Hat Enterprise Linux', 'redhat', 'CentOS Linux', 'Scientific Linux', 'Rocky Linux');
 	my %rol = map { $_ => 1 } @redhat_os_list;
 
 	my @suse_os_list = ('SUSE Linux Enterprise Server');
 	my %suseol = map { $_ => 1 } @suse_os_list;
 
 	# https://wiki.debian.org/DebianReleases
-	my @debian_supported_versions = ('8','9','10','11');
+	my @debian_supported_versions = ('9','10','11');
 	my %dsv = map { $_ => 1 } @debian_supported_versions;
 
 	# https://www.ubuntu.com/info/release-end-of-life
-	my @ubuntu_supported_versions = ('16.04','18.04','20.04');
+	my @ubuntu_supported_versions = ('18.04','20.04');
 	my %usv = map { $_ => 1 } @ubuntu_supported_versions;
 
 	if (exists($sol{$distro})) {
@@ -471,7 +472,7 @@ sub check_os_support {
        			}
 			my $major_redhat_version = $redhat_version[0];
 			if ( $VERBOSE ) { print "VERBOSE -> Major RedHat Version Detected ". $major_redhat_version . "\n"}
-			if ($major_redhat_version lt 6 ) {
+			if ($major_redhat_version lt 7 ) {
 				show_crit_box(); print "${RED}This distro version (${CYAN}$version${ENDC}${RED}) is not supported by apache2buddy.pl.${ENDC}\n";
 				exit;
 			} else {
