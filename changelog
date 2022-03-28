@@ -2,6 +2,10 @@ CHANGELOG
 
 When		Who		What
 ======================================================================================
+2022-03-28	Richard Forth   Added support for Alma Linux 8 
+				- Pending further testing
+2022-03-28	Richard Forth   Added support for Rocky Linux 8
+				- Tests Passing
 2022-03-28	Richard Forth   Removed support for EOL Operating Systems
 2021-11-03	Emil Cazamir	Added SuSE Linux v.12 compatibility 
 				Using httpd/apache2 running in prefork mode, tested 
