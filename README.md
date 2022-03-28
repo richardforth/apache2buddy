@@ -9,6 +9,8 @@
 
 [![Generic badge](https://img.shields.io/badge/Centos8-Passing-Green.svg)](https://shields.io/)
 
+[![Generic badge](https://img.shields.io/badge/Debian10-Passing-Green.svg)](https://shields.io/)
+
 # execution
 
 	# curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/master/apache2buddy.pl | perl
