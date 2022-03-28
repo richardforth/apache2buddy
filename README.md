@@ -11,6 +11,9 @@
 
 [![Generic badge](https://img.shields.io/badge/Ubuntu%2018.04-Passing-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Ubuntu%2020.04-Passing-Green.svg)](https://shields.io/)
 
+[![Generic badge](https://img.shields.io/badge/AmazonLinux-Pending-red.svg)](https://shields.io/)
+
+
 The rule of thumb is if its not listed, its not supported.
 
 # execution
