@@ -3,7 +3,7 @@ CHANGELOG
 When		Who		What
 ======================================================================================
 2022-03-28	Richard Forth   Added support for Alma Linux 8 
-				- Pending further testing
+				- Tests Passing
 2022-03-28	Richard Forth   Added support for Rocky Linux 8
 				- Tests Passing
 2022-03-28	Richard Forth   Removed support for EOL Operating Systems
