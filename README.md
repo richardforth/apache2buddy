@@ -11,7 +11,7 @@
 
 [![Generic badge](https://img.shields.io/badge/Ubuntu%2018.04-Passing-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Ubuntu%2020.04-Passing-Green.svg)](https://shields.io/)
 
-[![Generic badge](https://img.shields.io/badge/Amazon%20Linux%202-Passing with minor errors or warnings-yellow.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/Amazon%20Linux%202-Passing%20with%20minor%20errors%20or%20warnings-yellow.svg)](https://shields.io/)
 
 [![Generic badge](https://img.shields.io/badge/SLES%2012-Unable%20To%20Test%20Need%20Testers-red.svg)](https://shields.io/)
 
