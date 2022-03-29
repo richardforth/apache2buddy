@@ -62,18 +62,6 @@ pipeline {
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
-	stage('Docker AmazonLinux Staging') { 
-            agent { 
-                docker {
-                    image 'forric/amazonlinux:latest'
-                    args '-u root:root --cap-add SYS_PTRACE'
-                    reuseNode true
-                } 
-            }
-            steps {
-                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
-            }
-        }
         stage('Docker Debian9 Staging') { 
             agent { 
                 docker {
@@ -90,6 +78,18 @@ pipeline {
             agent { 
                 docker {
                     image 'forric/debian10:latest'
+                    args '-u root:root --cap-add SYS_PTRACE'
+                    reuseNode true
+                } 
+            }
+            steps {
+                sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+            }
+        }
+        stage('Docker Debian11 Staging') { 
+            agent { 
+                docker {
+                    image 'forric/debian11:latest'
                     args '-u root:root --cap-add SYS_PTRACE'
                     reuseNode true
                 } 
@@ -120,6 +120,18 @@ pipeline {
             }
             steps {
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+            }
+        }
+        stage('Docker AmazonLinux Staging') { 
+            agent { 
+                docker {
+                    image 'forric/amazonlinux:latest'
+                    args '-u root:root --cap-add SYS_PTRACE'
+                    reuseNode true
+                } 
+            }
+            steps {
+                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
     } 
