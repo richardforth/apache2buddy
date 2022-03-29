@@ -13,6 +13,8 @@
 
 [![Generic badge](https://img.shields.io/badge/AmazonLinux-Pending-red.svg)](https://shields.io/)
 
+[![Generic badge](https://img.shields.io/badge/SLES12-Pending-yellow.svg)](https://shields.io/)
+
 
 The rule of thumb is if its not listed, its not supported.
 
