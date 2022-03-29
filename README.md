@@ -1,5 +1,5 @@
 # Status
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/richardforth/apache2buddy/graphs/commit-activity) [![GitHub latest commit](https://badgen.net/github/last-commit/richardforth/apache2buddy)](https://GitHub.com/richardforth/apache2buddy/commit/) [![GitHub stars](https://badgen.net/github/stars/richardforth/apache2buddy)](https://GitHub.com/richardforth/apache2buddy/stargazers/) [![Generic badge](https://img.shields.io/badge/Tests-Passing-Green.svg)](https://shields.io/)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/richardforth/apache2buddy/graphs/commit-activity) [![GitHub latest commit](https://badgen.net/github/last-commit/richardforth/apache2buddy)](https://GitHub.com/richardforth/apache2buddy/commit/) [![GitHub stars](https://badgen.net/github/stars/richardforth/apache2buddy)](https://GitHub.com/richardforth/apache2buddy/stargazers/) [![Generic badge](https://img.shields.io/badge/Tests-Failing%20Amazon%20Linux-red.svg)](https://shields.io/)
 
 # Supported OSes
 
@@ -10,6 +10,9 @@
 [![Generic badge](https://img.shields.io/badge/Debian%209-Passing:%20EOL%20DATE%20June%2030%202022-yellow.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Debian%2010-Passing-Green.svg)](https://shields.io/)
 
 [![Generic badge](https://img.shields.io/badge/Ubuntu%2018.04-Passing-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Ubuntu%2020.04-Passing-Green.svg)](https://shields.io/)
+
+[![Generic badge](https://img.shields.io/badge/AmazonLinux-Pending-red.svg)](https://shields.io/)
+
 
 The rule of thumb is if its not listed, its not supported.
 

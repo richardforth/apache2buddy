@@ -382,7 +382,7 @@ except ModuleNotFoundError as e:
                 show_crit_box(); print "Unable to locate the any 'python' binary. This script requires python to determine the Operating System and Version.\n";
                 show_info_box(); print "${YELLOW}To fix this make sure the python2 or python3 package is installed.${ENDC}\n";
         }
-        exit;
+        exit 1;
 
         # XXX instead of calling exit() we can:
         # @main::os_platform = ( 'Unknown Distro', '0.0', '' );
