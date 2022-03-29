@@ -378,7 +378,7 @@ except ModuleNotFoundError as e:
         # we can't determine OS and Version
         if ( $py_exists ) {
                 show_crit_box(); print "Python scripting failed. Python requires package 'distro' or 'platform' to determine the Operating System and Version.\n";
-                show_info_box(); print "${YELLOW}To fix this try installing python-dist, python3-dist or 'pip/pip3 install dist'.${ENDC}\n";
+                show_info_box(); print "${YELLOW}To fix this try installing python-distro, python3-distro or 'pip/pip3 install distro'.${ENDC}\n";
         } else {
                 show_crit_box(); print "Unable to locate the any 'python' binary. This script requires python to determine the Operating System and Version.\n";
                 show_info_box(); print "${YELLOW}To fix this make sure the python2 or python3 package is installed.${ENDC}\n";
