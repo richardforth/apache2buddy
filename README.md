@@ -13,7 +13,7 @@
 
 [![Generic badge](https://img.shields.io/badge/Amazon%20Linux%202-Pending-red.svg)](https://shields.io/)
 
-[![Generic badge](https://img.shields.io/badge/SLES%2012-Unable%20To%20Test%20-%20Need%%20Testers-red.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/SLES%2012-Unable%20To%20Test%20%20Need%%20Testers-red.svg)](https://shields.io/)
 
 
 The rule of thumb is if its not listed, its not supported.
