@@ -378,6 +378,7 @@ except ModuleNotFoundError as e:
         # we can't determine OS and Version
         if ( $py_exists ) {
                 show_crit_box(); print "Python scripting failed. Python requires package 'distro' or 'platform' to determine the Operating System and Version.\n";
+                show_info_box(); print "${YELLOW}To fix this try installing python-distro, python3-distro or 'pip/pip3 install distro'.${ENDC}\n";
         } else {
                 show_crit_box(); print "Unable to locate the any 'python' binary. This script requires python to determine the Operating System and Version.\n";
                 show_info_box(); print "${YELLOW}To fix this make sure the python2 or python3 package is installed.${ENDC}\n";
@@ -407,6 +408,7 @@ sub check_os_support {
 				'Scientific Linux',
 				'Rocky Linux',
 				'AlmaLinux',
+				'Amazon Linux',
 				'SUSE Linux Enterprise Server',
 				'SuSE');
 	my %sol = map { $_ => 1 } @supported_os_list;
@@ -414,10 +416,13 @@ sub check_os_support {
 	my @ubuntu_os_list = ('Ubuntu', 'ubuntu');
 	my %uol = map { $_ => 1 } @ubuntu_os_list;
 	
+	my @amazon_os_list = ('AmazonLinux', 'Amazon Linux');
+	my %amzol = map { $_ => 1 } @amazon_os_list;
+	
 	my @debian_os_list = ('Debian', 'debian');
 	my %dol = map { $_ => 1 } @debian_os_list;
 	
-	my @redhat_os_list = ('Red Hat Enterprise Linux', 'redhat', 'CentOS Linux', 'Scientific Linux', 'Rocky Linux');
+	my @redhat_os_list = ('Red Hat Enterprise Linux', 'redhat', 'CentOS Linux', 'Scientific Linux', 'Rocky Linux', 'AlmaLinux');
 	my %rol = map { $_ => 1 } @redhat_os_list;
 
 	my @suse_os_list = ('SUSE Linux Enterprise Server');
@@ -430,6 +435,10 @@ sub check_os_support {
 	# https://www.ubuntu.com/info/release-end-of-life
 	my @ubuntu_supported_versions = ('18.04','20.04');
 	my %usv = map { $_ => 1 } @ubuntu_supported_versions;
+
+	# https://endoflife.date/amazon-linux
+        my @amazon_supported_versions = ('2');
+	my %amznsv = map { $_ => 1 } @amazon_supported_versions;
 
 	if (exists($sol{$distro})) {
 		if ( ! $NOOK ) { show_ok_box(); print "This distro is supported by apache2buddy.pl.\n" }	
@@ -497,6 +506,23 @@ sub check_os_support {
 			} else {
 				if ( ! $NOOK ) { show_ok_box(); print "This distro version is supported by apache2buddy.pl.\n" }
 			}
+		} elsif (exists($amzol{$distro})) {
+			# Currently there is only one supported distribution of Amazon Linux 
+			if ( $VERBOSE ) { print "VERBOSE -> Amazon Linux Version: ". $version . "\n"}
+			my @amazon_version = split('\.', $version);
+			if ( $VERBOSE ) {
+				foreach my $item (@amazon_version) {
+					print "VERBOSE: ".  $item . "\n";
+				}
+       			}
+			my $major_amazon_version = $amazon_version[0];
+			if ( $VERBOSE ) { print "VERBOSE -> Major Amazon Version Detected ". $major_amazon_version . "\n"}
+			if ($major_amazon_version lt 2 ) {
+				show_crit_box(); print "${RED}ERROR: This distro version (${CYAN}$version${ENDC}${RED}) is not supported by apache2buddy.pl.${ENDC}\n";
+				exit 1;
+			} else {
+				if ( ! $NOOK ) { show_ok_box(); print "This distro version is supported by apache2buddy.pl.\n" }
+			}	
 		}
 	} else {
 		show_crit_box(); print "${RED}ERROR: This distro is not supported by apache2buddy.pl.${ENDC}\n";

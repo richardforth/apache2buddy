@@ -3,6 +3,10 @@ CHANGELOG
 When		Who		What
 ======================================================================================
 2022-03-29	Richard Forth   Adding support for AmazonLinux
+				- Pending CICD testing
+				- Fixed issue with AmazonLinux 2 docker
+				container (not in this repo)
+2022-03-29	Richard Forth   Adding support for AmazonLinux
 				- Tests Failing Currently
 				- Work in progress
 2022-03-28	Richard Forth   Added support for Alma Linux 8 
