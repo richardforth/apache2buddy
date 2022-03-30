@@ -13,7 +13,7 @@
 
 [![Generic badge](https://img.shields.io/badge/Amazon%20Linux%202-Passing%20with%20minor%20errors%20or%20warnings-yellow.svg)](https://shields.io/)
 
-[![Generic badge](https://img.shields.io/badge/SLES%2012-Unable%20To%20Test-red.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/SLES%2012-Unable%20To%20Test-red.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/SLES%2012-Unable%20To%20Test-red.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/SLES%2015-Unable%20To%20Test-red.svg)](https://shields.io/)
 
 
 The rule of thumb is if its not listed, its not supported.
