@@ -1,0 +1,20 @@
+---
+- name: Run apache2buddy on webservers
+  hosts: webservers
+  become: TRUE
+  tasks:
+  - name: Fetch apache2buddy script
+    ansible.builtin.uri:
+      url: https://raw.githubusercontent.com/richardforth/apache2buddy/master/apache2buddy.pl
+      dest: /tmp/apache2buddy.pl
+
+  - name: Run apache2buddy script
+    command: perl /tmp/apache2buddy.pl --nocolor
+    register: out
+  - debug: var=out.stdout_lines
+
+  - name: Cleanup downloaded content
+    ansible.builtin.file:
+      path: /tmp/apache2buddy.pl
+      state: absent
+
