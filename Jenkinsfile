@@ -89,6 +89,22 @@ pipeline {
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
+        stage('Docker AmazonLinux Staging') { 
+            agent { 
+                docker {
+                    image 'forric/amazonlinux:latest'
+                    args '-u root:root --cap-add SYS_PTRACE'
+                    reuseNode true
+                } 
+            }
+            steps {
+                sh 'yum -y install git'
+                sh 'rm -rf apache2buddy'
+                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
+                sh 'source apache2buddy/a2bchk.sh'
+                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+            }
+        }
         stage('Docker Debian9 Staging') { 
             agent { 
                 docker {
@@ -167,22 +183,6 @@ pipeline {
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
                 sh 'bash --rcfile <{source apache2buddy/a2bchk.sh)'
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
-            }
-        }
-        stage('Docker AmazonLinux Staging') { 
-            agent { 
-                docker {
-                    image 'forric/amazonlinux:latest'
-                    args '-u root:root --cap-add SYS_PTRACE'
-                    reuseNode true
-                } 
-            }
-            steps {
-                sh 'yum -y install git'
-                sh 'rm -rf apache2buddy'
-                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
-                sh 'source apache2buddy/a2bchk.sh'
-                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
     } 
