@@ -433,7 +433,7 @@ sub check_os_support {
 	my %dsv = map { $_ => 1 } @debian_supported_versions;
 
 	# https://www.ubuntu.com/info/release-end-of-life
-	my @ubuntu_supported_versions = ('18.04','20.04');
+	my @ubuntu_supported_versions = ('18.04','20.04, 22.04');
 	my %usv = map { $_ => 1 } @ubuntu_supported_versions;
 
 	# https://endoflife.date/amazon-linux
