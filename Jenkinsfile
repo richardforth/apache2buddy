@@ -1,6 +1,11 @@
 pipeline { 
     agent { label 'docker' }
     
+    // We skip the default checkout SCM as we are running the tests in docker containers.
+    options {
+      skipDefaultCheckout true
+    }    
+ 
     stages { 
         stage('Docker CentOS7 Staging') { 
             agent { 
