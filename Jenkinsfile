@@ -2,8 +2,10 @@ pipeline {
     agent { label 'docker' }
     
     // We skip the default checkout SCM as we are running the tests in docker containers.
+    // We only want to keep the last 3 builds on the Jenkins Controller to save diskspace.
     options {
       skipDefaultCheckout true
+      buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '3')
     }    
  
     stages { 
