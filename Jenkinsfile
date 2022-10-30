@@ -114,6 +114,7 @@ pipeline {
                 } 
             }
             steps {
+                sh 'apt-get update'
                 sh 'apt -y install git'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
@@ -130,6 +131,7 @@ pipeline {
                 } 
             }
             steps {
+                sh 'apt-get update'
                 sh 'apt -y install git'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
@@ -146,6 +148,7 @@ pipeline {
                 } 
             }
             steps {
+                sh 'apt-get update'
                 sh 'apt -y install git'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
@@ -162,6 +165,7 @@ pipeline {
                 } 
             }
             steps {
+                sh 'apt-get update'
                 sh 'apt -y install git'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
@@ -178,6 +182,7 @@ pipeline {
                 } 
             }
             steps {
+                sh 'apt-get update'
                 sh 'apt -y install git'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
