@@ -205,6 +205,7 @@ pipeline {
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
                 sh 'bash -c "source apache2buddy/a2bchk.sh"'
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+            }
         }
     } 
 }
