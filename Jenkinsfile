@@ -1,6 +1,13 @@
 pipeline { 
     agent { label 'docker' }
     
+    // We skip the default checkout SCM as we are running the tests in docker containers.
+    // We only want to keep the last 3 builds on the Jenkins Controller to save diskspace.
+    options {
+      skipDefaultCheckout true
+      buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '3')
+    }    
+ 
     stages { 
         stage('Docker CentOS7 Staging') { 
             agent { 
@@ -11,6 +18,10 @@ pipeline {
                 } 
             }
             steps {
+                sh 'yum -y install git'
+                sh 'rm -rf apache2buddy'
+                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
+                sh 'source apache2buddy/a2bchk.sh'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -23,6 +34,10 @@ pipeline {
                 } 
             }
             steps {
+                sh 'yum -y install git'
+                sh 'rm -rf apache2buddy'
+                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
+                sh 'source apache2buddy/a2bchk.sh'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -35,6 +50,10 @@ pipeline {
                 } 
             }
             steps {
+                sh 'yum -y install git'
+                sh 'rm -rf apache2buddy'
+                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
+                sh 'source apache2buddy/a2bchk.sh'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -47,6 +66,10 @@ pipeline {
                 } 
             }
             steps {
+                sh 'yum -y install git'
+                sh 'rm -rf apache2buddy'
+                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
+                sh 'source apache2buddy/a2bchk.sh'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -59,6 +82,26 @@ pipeline {
                 } 
             }
             steps {
+                sh 'yum -y install git'
+                sh 'rm -rf apache2buddy'
+                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
+                sh 'source apache2buddy/a2bchk.sh'
+                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+            }
+        }
+        stage('Docker AmazonLinux Staging') { 
+            agent { 
+                docker {
+                    image 'forric/amazonlinux:latest'
+                    args '-u root:root --cap-add SYS_PTRACE'
+                    reuseNode true
+                } 
+            }
+            steps {
+                sh 'yum -y install git'
+                sh 'rm -rf apache2buddy'
+                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
+                sh 'source apache2buddy/a2bchk.sh'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -71,6 +114,11 @@ pipeline {
                 } 
             }
             steps {
+                sh 'apt-get update'
+                sh 'apt -y install git'
+                sh 'rm -rf apache2buddy'
+                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
+                sh 'bash -c "source apache2buddy/a2bchk.sh"'
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -83,6 +131,11 @@ pipeline {
                 } 
             }
             steps {
+                sh 'apt-get update'
+                sh 'apt -y install git'
+                sh 'rm -rf apache2buddy'
+                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
+                sh 'bash -c "source apache2buddy/a2bchk.sh"'
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -95,6 +148,11 @@ pipeline {
                 } 
             }
             steps {
+                sh 'apt-get update'
+                sh 'apt -y install git'
+                sh 'rm -rf apache2buddy'
+                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
+                sh 'bash -c "source apache2buddy/a2bchk.sh"'
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -107,6 +165,11 @@ pipeline {
                 } 
             }
             steps {
+                sh 'apt-get update'
+                sh 'apt -y install git'
+                sh 'rm -rf apache2buddy'
+                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
+                sh 'bash -c "source apache2buddy/a2bchk.sh"'
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -119,19 +182,29 @@ pipeline {
                 } 
             }
             steps {
+                sh 'apt-get update'
+                sh 'apt -y install git'
+                sh 'rm -rf apache2buddy'
+                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
+                sh 'bash -c "source apache2buddy/a2bchk.sh"'
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
-        stage('Docker AmazonLinux Staging') { 
+        stage('Docker Ubuntu2204 Staging') { 
             agent { 
                 docker {
-                    image 'forric/amazonlinux:latest'
+                    image 'forric/ubuntu2204:latest'
                     args '-u root:root --cap-add SYS_PTRACE'
                     reuseNode true
                 } 
             }
             steps {
-                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                sh 'apt-get update'
+                sh 'apt -y install git'
+                sh 'rm -rf apache2buddy'
+                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
+                sh 'bash -c "source apache2buddy/a2bchk.sh"'
+                sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
     } 
