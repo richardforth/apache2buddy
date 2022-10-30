@@ -9,7 +9,7 @@
 
 [![Generic badge](https://img.shields.io/badge/Debian%209-Passing:%20EOL%20DATE%20June%2030%202022-yellow.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Debian%2010-Passing-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Debian%2011-Passing%20with%20minor%20errors%20or%20warnings-yellow.svg)](https://shields.io/)
 
-[![Generic badge](https://img.shields.io/badge/Ubuntu%2018.04-Passing-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Ubuntu%2020.04-Passing-Green.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/Ubuntu%2018.04-Passing-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Ubuntu%2020.04-Passing-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Ubuntu%2022.04-Passing-Green.svg)](https://shields.io/)
 
 [![Generic badge](https://img.shields.io/badge/Amazon%20Linux%202-Passing%20with%20minor%20errors%20or%20warnings-yellow.svg)](https://shields.io/)
 
