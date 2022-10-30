@@ -2,6 +2,9 @@ CHANGELOG
 
 When		Who		What
 ======================================================================================
+2022-10-30      Richard Forth   Added a2bchk.sh script and extra step in
+				Jenkins pipelene. Credit to Dakman for the
+				reminder! :) Issue #402
 2022-03-29	Richard Forth   Adding support for AmazonLinux
 				- Pending CICD testing
 				- Fixed issue with AmazonLinux 2 docker
