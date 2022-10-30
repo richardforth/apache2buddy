@@ -190,5 +190,21 @@ pipeline {
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
+        stage('Docker Ubuntu2204 Staging') { 
+            agent { 
+                docker {
+                    image 'forric/ubuntu2204:latest'
+                    args '-u root:root --cap-add SYS_PTRACE'
+                    reuseNode true
+                } 
+            }
+            steps {
+                sh 'apt-get update'
+                sh 'apt -y install git'
+                sh 'rm -rf apache2buddy'
+                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
+                sh 'bash -c "source apache2buddy/a2bchk.sh"'
+                sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+        }
     } 
 }
