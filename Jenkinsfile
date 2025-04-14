@@ -50,6 +50,7 @@ pipeline {
                 } 
             }
             steps {
+                sh 'rpm --import https://repo.almalinux.org/almalinux/RPM-GPG-KEY-AlmaLinux-8'
                 sh 'yum -y install git'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
