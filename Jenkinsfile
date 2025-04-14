@@ -9,38 +9,6 @@ pipeline {
     }    
  
     stages { 
-        stage('Docker CentOS7 Staging') { 
-            agent { 
-                docker {
-                    image 'forric/centos7:latest'
-                    args '-u root:root --cap-add SYS_PTRACE'
-                    reuseNode true
-                } 
-            }
-            steps {
-                sh 'yum -y install git'
-                sh 'rm -rf apache2buddy'
-                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
-                sh 'source apache2buddy/a2bchk.sh'
-                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
-            }
-        }
-        stage('Docker Scientific7 Staging') { 
-            agent { 
-                docker {
-                    image 'forric/scientific7:latest'
-                    args '-u root:root --cap-add SYS_PTRACE'
-                    reuseNode true
-                } 
-            }
-            steps {
-                sh 'yum -y install git'
-                sh 'rm -rf apache2buddy'
-                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
-                sh 'source apache2buddy/a2bchk.sh'
-                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
-            }
-        }
         stage('Docker CentOS8 Staging') { 
             agent { 
                 docker {
