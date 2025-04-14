@@ -3,9 +3,11 @@
 
 # Supported OSes
 
-[![Generic badge](https://img.shields.io/badge/RHEL%207-Unable%20To%20Test-red.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Centos%207-Passing-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Scientific%207-Passing-Green.svg)](https://shields.io/) 
+ [![Generic badge](https://img.shields.io/badge/RHEL%208-Unable%20To%20Test-red.svg)](https://shields.io/)
+ [![Generic badge](https://img.shields.io/badge/Centos%208-Passing-Greenw.svg)](https://shields.io/)
+ [![Generic badge](https://img.shields.io/badge/Rocky%20Linux%208-Passing-Green.svg)](https://shields.io/)
+ [![Generic badge](https://img.shields.io/badge/AlmaLinux%208-Failing-Red.svg)](https://shields.io/)
 
- [![Generic badge](https://img.shields.io/badge/RHEL%208-Unable%20To%20Test-red.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Centos%208-Deprecated-yellow.svg)](https://shields.io/)  [![Generic badge](https://img.shields.io/badge/Rocky%20Linux%208-Passing-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/AlmaLinux%208-Passing-Green.svg)](https://shields.io/)
 
 [![Generic badge](https://img.shields.io/badge/Debian%209-Passing:%20EOL%20DATE%20June%2030%202022-yellow.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Debian%2010-Passing-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Debian%2011-Passing%20with%20minor%20errors%20or%20warnings-yellow.svg)](https://shields.io/)
 
