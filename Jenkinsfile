@@ -1,5 +1,5 @@
 pipeline { 
-    agent { label 'docker' }
+    agent none
     
     // We skip the default checkout SCM as we are running the tests in docker containers.
     // We only want to keep the last 3 builds on the Jenkins Controller to save diskspace.
