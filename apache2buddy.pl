@@ -315,81 +315,88 @@ if ( ! $NOCOLOR ) {
 }
 
 sub get_os_platform {
+    return @main::os_platform if @main::os_platform; # we already know everything
 
-        return @main::os_platform if @main::os_platform; # we already know everything
+    my ($distro, $version, $codename);
 
-         my @py_scripts = (
-                # platform.linux_distribution() - This function is deprecated since Python 3.5
-                # and removed in Python 3.8. See alternative like the distro package.
-                "try:
-	import platform
-	print(platform.linux_distribution())
-except AttributeError as e:
-	pass",
-                # platform.dist() -  Deprecated since version 2.6.
-                "try:
-	import platform
-	print(platform.dist())
-except AttributeError as e:
-	pass",
-                # distro.linux_distribution() - 'distro' is not default installed package
-                "try:
-	import distro
-	print(distro.linux_distribution())
-except AttributeError as e:
-	pass
-except ModuleNotFoundError as e:
-	pass"); # Note the pass is required because perl needs an empty result for error handling internally switching from python back to perl.
-                # We just want python to die quietly in a corner for aestehetic reasons.
+    my %os_info;
 
-        # Check for python (new in Debian 9 as it doesnt come with it out of the box)
-        my $py_exists = 0;
-        for my $pyname ( qw / python python3 python2 / ) {
-                my $python = `which $pyname`;
-                chomp( $python );
-                unless ( $python ) {
-                        show_crit_box(); 
-                        print "Unable to locate the '$pyname' binary.\n";
-                        next;
-                }
-
-                $py_exists = 1;
-                if ( ! $NOOK ) { show_ok_box(); print "The '$pyname' binary exists and is available for use: ${CYAN}$python${ENDC}\n" }
-
-                print "VERBOSE: Check OS platform\n" if $VERBOSE;
-
-                for my $pyscript (@py_scripts) {
-                        print "VERBOSE:   $python -c '$pyscript'\n" if $VERBOSE;
-                        my $raw_platform = `$python -c \"$pyscript\"`;
-                        # ('CentOS Linux', '7.3.1611', 'Core')
-                        chomp($raw_platform);
-                        next unless $raw_platform;
-
-                        $raw_platform =~ s/[()']//g;
-                        my ( $distro, $version, $codename ) = split( '\s*,\s+', $raw_platform);
-                        next unless $distro;
-
-                        @main::os_platform = ( $distro, $version, $codename );
-                        return ( $distro, $version, $codename );
-                }
-
+    # Parse /etc/os-release if available
+    if (-e "/etc/os-release") {
+        open my $fh, '<', '/etc/os-release' or return ('Unknown', undef, undef);
+        while (<$fh>) {
+            chomp;
+            if (/^(\w+)=(?:"|')?(.+?)(?:"|')?$/) {
+                $os_info{$1} = $2;
+            }
         }
+        close $fh;
 
-        # we can't determine OS and Version
-        if ( $py_exists ) {
-                show_crit_box(); print "Python scripting failed. Python requires package 'distro' or 'platform' to determine the Operating System and Version.\n";
-                show_info_box(); print "${YELLOW}To fix this try installing python-distro, python3-distro or 'pip/pip3 install distro'.${ENDC}\n";
+        $distro   = $os_info{NAME};
+        $version  = $os_info{VERSION_ID};
+        $codename = $os_info{VERSION_CODENAME} || ($os_info{VERSION} =~ /\((\w+)\)/ ? $1 : undef);
+    }
+
+    # Fallback: /etc/lsb-release
+    if (!$distro && -e "/etc/lsb-release") {
+        open my $fh, '<', '/etc/lsb-release' or return ('Unknown', undef, undef);
+        while (<$fh>) {
+            chomp;
+            if (/^DISTRIB_ID=(.+)/)        { $distro   = $1; }
+            if (/^DISTRIB_RELEASE=(.+)/)   { $version  = $1; }
+            if (/^DISTRIB_CODENAME=(.+)/)  { $codename = $1; }
+        }
+        close $fh;
+    }
+
+    # Debian-specific fallback
+    if (!$distro && -e "/etc/debian_version") {
+        chomp($version = `cat /etc/debian_version`);
+        $distro = "Debian";
+    }
+
+    # RedHat/CentOS fallback
+    if (!$distro && -e "/etc/redhat-release") {
+        my $line = `cat /etc/redhat-release`;
+        if ($line =~ /^(\w+)[^\d]*(\d[\d.]*)/) {
+            $distro  = $1;
+            $version = $2;
         } else {
-                show_crit_box(); print "Unable to locate the any 'python' binary. This script requires python to determine the Operating System and Version.\n";
-                show_info_box(); print "${YELLOW}To fix this make sure the python2 or python3 package is installed.${ENDC}\n";
+            $distro = $line;
         }
-        exit 1;
+    }
 
-        # XXX instead of calling exit() we can:
-        # @main::os_platform = ( 'Unknown Distro', '0.0', '' );
-        # return @main::os_platform;
+    # Gentoo fallback
+    if (!$distro && -e "/etc/gentoo-release") {
+        my $line = `cat /etc/gentoo-release`;
+        if ($line =~ /Gentoo.*?(\d{4}\.\d+)/) {
+            $distro  = "Gentoo";
+            $version = $1;
+        } else {
+            $distro = "Gentoo";
+        }
+    }
+
+    # macOS (Darwin)
+    if (!$distro && $^O eq 'darwin') {
+        chomp($distro  = `sw_vers -productName`);
+        chomp($version = `sw_vers -productVersion`);
+    }
+
+    # Bitnami detection
+    if (-d "/opt/bitnami") {
+        $distro = "Bitnami";
+        # Append base distro if known
+        if ($os_info{NAME}) {
+            $distro .= " ($os_info{NAME})";
+        }
+    }
+
+    # Fallback to Perl OS name
+    $distro ||= $^O;
+
+    return ($distro, $version, $codename);
 }
-
 sub check_os_support {
 	my ($distro, $version, $codename) = @_;
 	# Please dont make pull requests to add your distro to this list, that doesnt make it supported.
@@ -402,15 +409,9 @@ sub check_os_support {
 				'Red Hat Enterprise Linux',
 				'Red Hat Enterprise Linux Server',
 				'redhat',
-				'CentOS Linux',
-				'CentOS',
-				'centos',
-				'Scientific Linux',
 				'Rocky Linux',
 				'AlmaLinux',
-				'Amazon Linux',
-				'SUSE Linux Enterprise Server',
-				'SuSE');
+				'Amazon Linux');
 	my %sol = map { $_ => 1 } @supported_os_list;
 	
 	my @ubuntu_os_list = ('Ubuntu', 'ubuntu');
@@ -422,22 +423,19 @@ sub check_os_support {
 	my @debian_os_list = ('Debian', 'debian');
 	my %dol = map { $_ => 1 } @debian_os_list;
 	
-	my @redhat_os_list = ('Red Hat Enterprise Linux', 'redhat', 'CentOS Linux', 'Scientific Linux', 'Rocky Linux', 'AlmaLinux');
+	my @redhat_os_list = ('Red Hat Enterprise Linux', 'redhat', 'Rocky Linux', 'AlmaLinux');
 	my %rol = map { $_ => 1 } @redhat_os_list;
 
-	my @suse_os_list = ('SUSE Linux Enterprise Server');
-	my %suseol = map { $_ => 1 } @suse_os_list;
-
 	# https://wiki.debian.org/DebianReleases
-	my @debian_supported_versions = ('9','10','11');
+	my @debian_supported_versions = ('12');
 	my %dsv = map { $_ => 1 } @debian_supported_versions;
 
 	# https://www.ubuntu.com/info/release-end-of-life
-	my @ubuntu_supported_versions = ('18.04','20.04','22.04');
+	my @ubuntu_supported_versions = ('20.04','22.04','24.04');
 	my %usv = map { $_ => 1 } @ubuntu_supported_versions;
 
 	# https://endoflife.date/amazon-linux
-        my @amazon_supported_versions = ('2');
+        my @amazon_supported_versions = ('2', '2023');
 	my %amznsv = map { $_ => 1 } @amazon_supported_versions;
 
 	if (exists($sol{$distro})) {
