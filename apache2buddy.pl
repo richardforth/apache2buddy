@@ -914,17 +914,17 @@ sub get_memory_usage {
 		exit 1;
 	} 
 	# figure out how much memory each process is using
-	foreach (@pids) {
-		chomp($_);
+	foreach my $pid (@pids) {
+		chomp($pid);
 		# pmap -d is used to determine the memory usage for the 
 		# individual processes
 		my ($distro, $version, $codename) = get_os_platform();
 		#output of 'pmap' is different depending on distro!
 		my $pid_mem_usage;
 		if (ucfirst($distro) eq "SUSE Linux Enterprise Server" ) {
-			$pid_mem_usage = `LANGUAGE=en_GB.UTF-8 pmap -d $_ | egrep "writable-private" | awk \'{ print \$1 }\'`;
+			$pid_mem_usage = `LANGUAGE=en_GB.UTF-8 pmap -d $pid | egrep "writable-private" | awk \'{ print \$1 }\'`;
 		} else {
-			$pid_mem_usage = `LANGUAGE=en_GB.UTF-8 pmap -d $_ | egrep "writeable/private" | awk \'{ print \$4 }\'`;
+			$pid_mem_usage = `LANGUAGE=en_GB.UTF-8 pmap -d $pid | egrep "writeable/private" | awk \'{ print \$4 }\'`;
 		}
 		$pid_mem_usage =~ s/K//;
 		chomp($pid_mem_usage);
