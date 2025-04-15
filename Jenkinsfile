@@ -21,7 +21,6 @@ pipeline {
                 sh 'yum -y install git'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
-                sh 'source apache2buddy/a2bchk.sh'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -37,7 +36,6 @@ pipeline {
                 sh 'yum -y install git'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
-                sh 'source apache2buddy/a2bchk.sh'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -54,7 +52,6 @@ pipeline {
                 sh 'yum -y install git'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
-                sh 'source apache2buddy/a2bchk.sh'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -71,7 +68,6 @@ pipeline {
                 sh 'yum -y install git'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
-                sh 'source apache2buddy/a2bchk.sh'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -103,7 +99,6 @@ pipeline {
                 sh 'yum -y install git'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
-                sh 'source apache2buddy/a2bchk.sh'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -120,7 +115,6 @@ pipeline {
                 sh 'apt -y install git'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
-                sh 'bash -c "source apache2buddy/a2bchk.sh"'
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -137,7 +131,6 @@ pipeline {
                 sh 'apt -y install git'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
-                sh 'bash -c "source apache2buddy/a2bchk.sh"'
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -154,7 +147,6 @@ pipeline {
                 sh 'apt -y install git'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
-                sh 'bash -c "source apache2buddy/a2bchk.sh"'
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -171,7 +163,6 @@ pipeline {
                 sh 'apt -y install git'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
-                sh 'bash -c "source apache2buddy/a2bchk.sh"'
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
