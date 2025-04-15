@@ -394,6 +394,9 @@ sub get_os_platform {
 
     # Fallback to Perl OS name
     $distro ||= $^O;
+    
+    # ensure we return a codename even if there is none
+    $codename ||= 'unknown';
 
     return ($distro, $version, $codename);
 }
@@ -2293,7 +2296,7 @@ sub preflight_checks {
 sub detect_package_updates {
 	my ($distro, $version, $codename) = get_os_platform();
 	our $package_update = 0;
-	if (ucfirst($distro) eq "Ubuntu" or ucfirst($distro) eq "Debian" ) {
+	if (ucfirst($distro) eq "Ubuntu" or ucfirst($distro) eq "Debian" or  ucfirst($distro) eq "Debian GNU/Linux") {
 		$package_update = `apt-get update 2>&1 >/dev/null && dpkg --get-selections | xargs apt-cache policy | grep -1 Installed | sed -r 's/(:|Installed: |Candidate: )//' | uniq -u | tac | sed '/--/I,+1 d' | tac | sed '\$d' | sed -n 1~2p | egrep "^php|^apache2"`;
 	} elsif (ucfirst($distro) eq "SUSE Linux Enterprise Server") {
 		$package_update = `zypper list-updates | egrep "^httpd|^php"`;
