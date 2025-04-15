@@ -394,6 +394,9 @@ sub get_os_platform {
 
     # Fallback to Perl OS name
     $distro ||= $^O;
+    
+    # ensure we return a codename even if there is none
+    $codename ||= 'unknown';
 
     return ($distro, $version, $codename);
 }
