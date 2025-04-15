@@ -2437,8 +2437,8 @@ sub grep_php_fatal {
                 open(FILE, $file);
                 while (<FILE>) {
                         $phpfatalerror_hits++ if $_ =~ /php fatal/i;
-                }
-                close(FILE);
+			}
+			close(FILE);
                 if ($phpfatalerror_hits) {  $logfile_counts{ $file } =  $phpfatalerror_hits }
         }
 }	
@@ -2500,7 +2500,8 @@ sub detect_maxclients_hits {
 
 sub detect_php_memory_limit {
 	if ( ! $NOINFO) {
-		our $apache_proc_php = get_php_setting('/usr/bin/php', 'memory_limit');
+		my $php_exe =  `which php`;
+		our $apache_proc_php = get_php_setting($php_exe, 'memory_limit');
 		show_info_box(); print "Your PHP Memory Limit (Per-Process) is ${CYAN}".$apache_proc_php."${ENDC}.\n";
 		if ($apache_proc_php eq "-1") {
 			show_advisory_box(); print "You should set a PHP Memory Limit (-1 is ${CYAN}UNLIMITED${ENDC}) which is not recommended.\n";
