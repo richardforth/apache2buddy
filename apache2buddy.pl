@@ -486,24 +486,6 @@ sub check_os_support {
 			} else {
 				if ( ! $NOOK ) { show_ok_box(); print "This distro version is supported by apache2buddy.pl.\n" }
 			}
-		} elsif (exists($suseol{$distro})) {
-			# for SUSE versions is not so clinical regarding the specific versions, however we need to be mindful of EOL versions eg SLES 12, 15, ...
-			# get major version from version string.
-			if ( $VERBOSE ) { print "VERBOSE -> SUSE Version: ". $version . "\n"}
-			my @suse_version = split('\.', $version);
-			if ( $VERBOSE ) {
-				foreach my $item (@suse_version) {
-					print "VERBOSE: ".  $item . "\n";
-				}
-       			}
-			my $major_suse_version = $suse_version[0];
-			if ( $VERBOSE ) { print "VERBOSE -> Major SUSE Version Detected ". $major_suse_version . "\n"}
-			if ($major_suse_version lt 12 ) {
-				show_crit_box(); print "${RED}ERROR: This distro version (${CYAN}$version${ENDC}${RED}) is not supported by apache2buddy.pl.${ENDC}\n";
-				exit 1;
-			} else {
-				if ( ! $NOOK ) { show_ok_box(); print "This distro version is supported by apache2buddy.pl.\n" }
-			}
 		} elsif (exists($amzol{$distro})) {
 			# Currently there is only one supported distribution of Amazon Linux 
 			if ( $VERBOSE ) { print "VERBOSE -> Amazon Linux Version: ". $version . "\n"}
