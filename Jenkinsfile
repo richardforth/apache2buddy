@@ -9,10 +9,10 @@ pipeline {
     }    
  
     stages { 
-        stage('Docker CentOS8 Staging') { 
+        stage('Docker RockyLinux8 Staging') { 
             agent { 
                 docker {
-                    image 'forric/centos8:latest'
+                    image 'forric/rockylinux8:latest'
                     args '-u root:root --cap-add SYS_PTRACE'
                     reuseNode true
                 } 
@@ -25,10 +25,10 @@ pipeline {
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
-        stage('Docker RockyLinux8 Staging') { 
+        stage('Docker RockyLinux9 Staging') { 
             agent { 
                 docker {
-                    image 'forric/rockylinux8:latest'
+                    image 'forric/rockylinux9:latest'
                     args '-u root:root --cap-add SYS_PTRACE'
                     reuseNode true
                 } 
@@ -58,10 +58,43 @@ pipeline {
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
-        stage('Docker AmazonLinux Staging') { 
+        stage('Docker AlmaLinux9 Staging') { 
             agent { 
                 docker {
-                    image 'forric/amazonlinux:latest'
+                    image 'forric/almalinux9:latest'
+                    args '-u root:root --cap-add SYS_PTRACE'
+                    reuseNode true
+                } 
+            }
+            steps {
+                sh 'rpm --import https://repo.almalinux.org/almalinux/RPM-GPG-KEY-AlmaLinux-8'
+                sh 'yum -y install git'
+                sh 'rm -rf apache2buddy'
+                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
+                sh 'source apache2buddy/a2bchk.sh'
+                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+            }
+        }
+        stage('Docker AmazonLinux 2 Staging') { 
+            agent { 
+                docker {
+                    image 'forric/amazonlinux2:latest'
+                    args '-u root:root --cap-add SYS_PTRACE'
+                    reuseNode true
+                } 
+            }
+            steps {
+                sh 'yum -y install git'
+                sh 'rm -rf apache2buddy'
+                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
+                sh 'source apache2buddy/a2bchk.sh'
+                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+            }
+        }
+        stage('Docker AmazonLinux 2023 Staging') { 
+            agent { 
+                docker {
+                    image 'forric/amazonlinux2023:latest'
                     args '-u root:root --cap-add SYS_PTRACE'
                     reuseNode true
                 } 
@@ -95,6 +128,40 @@ pipeline {
             agent { 
                 docker {
                     image 'forric/ubuntu2204:latest'
+                    args '-u root:root --cap-add SYS_PTRACE'
+                    reuseNode true
+                } 
+            }
+            steps {
+                sh 'apt-get update'
+                sh 'apt -y install git'
+                sh 'rm -rf apache2buddy'
+                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
+                sh 'bash -c "source apache2buddy/a2bchk.sh"'
+                sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+            }
+        }
+        stage('Docker Ubuntu2404 Staging') { 
+            agent { 
+                docker {
+                    image 'forric/ubuntu2404:latest'
+                    args '-u root:root --cap-add SYS_PTRACE'
+                    reuseNode true
+                } 
+            }
+            steps {
+                sh 'apt-get update'
+                sh 'apt -y install git'
+                sh 'rm -rf apache2buddy'
+                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
+                sh 'bash -c "source apache2buddy/a2bchk.sh"'
+                sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+            }
+        }
+        stage('Docker Debian 12 Staging') { 
+            agent { 
+                docker {
+                    image 'forric/debian12:latest'
                     args '-u root:root --cap-add SYS_PTRACE'
                     reuseNode true
                 } 
