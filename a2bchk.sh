@@ -15,9 +15,14 @@ then
         then
                 # execute the code, its safe - we can assume
                 curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/master/apache2buddy.pl | perl
+		if [[ $? != 0 ]]; then
+			exit 1
+		fi
         else
                 echo "Error: SHA256SUM mismatch, execution aborted."
+		exit 1
         fi
 else
         echo "Error: MD5SUM mismatch, execution aborted."
+	exit 1
 fi
