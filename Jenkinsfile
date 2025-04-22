@@ -18,7 +18,7 @@ pipeline {
                 } 
             }
             steps {
-                sh 'yum -y install git'
+                sh 'yum -y install git hostname'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
@@ -33,7 +33,7 @@ pipeline {
                 } 
             }
             steps {
-                sh 'yum -y install git'
+                sh 'yum -y install git hostname'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
