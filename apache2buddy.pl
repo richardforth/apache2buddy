@@ -222,7 +222,7 @@ our $SKIPUPDATES = 0;
 # MORE OUR VARIABLES #
 ######################
 
-# "cache" for os platrofm information: ( distro, version, codename )
+# "cache" for os platform information: ( distro, version, codename )
 our @os_platform;
 
 
