@@ -9,6 +9,36 @@ pipeline {
     }    
  
     stages { 
+        stage('Docker OracleLinux8 Staging') { 
+            agent { 
+                docker {
+                    image 'forric/oraclelinux8:latest'
+                    args '-u root:root --cap-add SYS_PTRACE'
+                    reuseNode true
+                } 
+            }
+            steps {
+                sh 'yum -y install git'
+                sh 'rm -rf apache2buddy'
+                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
+                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+            }
+        }
+        stage('Docker OracleLinux9 Staging') { 
+            agent { 
+                docker {
+                    image 'forric/oraclelinux9:latest'
+                    args '-u root:root --cap-add SYS_PTRACE'
+                    reuseNode true
+                } 
+            }
+            steps {
+                sh 'yum -y install git'
+                sh 'rm -rf apache2buddy'
+                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
+                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+            }
+        }
         stage('Docker RockyLinux8 Staging') { 
             agent { 
                 docker {
