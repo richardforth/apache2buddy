@@ -102,6 +102,22 @@ pipeline {
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
+        stage('Docker Ubuntu1804 Staging') { 
+            agent { 
+                docker {
+                    image 'forric/ubuntu1804:latest'
+                    args '-u root:root --cap-add SYS_PTRACE'
+                    reuseNode true
+                } 
+            }
+            steps {
+                sh 'apt-get update'
+                sh 'apt -y install git'
+                sh 'rm -rf apache2buddy'
+                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
+                sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+            }
+        }
         stage('Docker Ubuntu2004 Staging') { 
             agent { 
                 docker {
