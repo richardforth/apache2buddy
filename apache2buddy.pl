@@ -1794,7 +1794,7 @@ sub preflight_checks {
 		$pid = $process_info[1];
 		if ( not $pid ) {
                         show_crit_box; print "apache process not found.\n";
-                        exit;
+                        exit 1;
                 } else {
                         my $command = `netstat -plnt | egrep "httpd|apache2"`;
                         if ( $command =~ /:+(\d+)/ ) { our $real_port = $1 }
