@@ -2722,7 +2722,7 @@ sub get_ip {
         if ( $curl eq '' ) {
                 show_crit_box;
                 print "Cannot find the 'curl' executable.";
-                exiti 1;
+                exit 1;
         } else {
                 our $ip = `$curl -s myip.dnsomatic.com`;
                 if ($ip =~ /429 Too Many Requests/) {
