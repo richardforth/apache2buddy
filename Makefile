@@ -1,4 +1,4 @@
-.PHONY: check
+.PHONY: check lazyadd
 
 check: 
 	md5sum apache2buddy.pl
@@ -14,3 +14,7 @@ md5sums.txt: apache2buddy.pl
 
 sha256sums.txt: apache2buddy.pl
 	sha256sum apache2buddy.pl >sha256sums.txt
+
+lazyadd:
+	git add apache2buddy.pl md5sums.txt sha256sums.txt
+
