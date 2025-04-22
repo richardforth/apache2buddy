@@ -1,6 +1,10 @@
 pipeline { 
     agent none
-    
+    // Pre-Seed tzdata for php install on the ubuntu docker containers
+    environment {
+        DEBIAN_FRONTEND = 'noninteractive'
+        TZ = 'Europe/London'
+    }    
     // We skip the default checkout SCM as we are running the tests in docker containers.
     // We only want to keep the last 3 builds on the Jenkins Controller to save diskspace.
     options {
@@ -20,6 +24,7 @@ pipeline {
             steps {
                 sh 'yum -y install git hostname'
                 sh 'yum -y install php'
+		sh 'php -v'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
@@ -36,6 +41,7 @@ pipeline {
             steps {
                 sh 'yum -y install git hostname'
                 sh 'yum -y install php'
+		sh 'php -v'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
@@ -50,8 +56,9 @@ pipeline {
                 } 
             }
             steps {
-                sh 'yum -y install git'
                 sh 'yum -y install php'
+		sh 'php -v'
+                sh 'yum -y install git'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
@@ -66,8 +73,9 @@ pipeline {
                 } 
             }
             steps {
-                sh 'yum -y install git'
                 sh 'yum -y install php'
+		sh 'php -v'
+                sh 'yum -y install git'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
@@ -84,6 +92,7 @@ pipeline {
             steps {
                 sh 'rpm --import https://repo.almalinux.org/almalinux/RPM-GPG-KEY-AlmaLinux-8'
                 sh 'yum -y install php'
+		sh 'php -v'
                 sh 'yum -y install git'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
@@ -101,6 +110,7 @@ pipeline {
             steps {
                 sh 'rpm --import https://repo.almalinux.org/almalinux/RPM-GPG-KEY-AlmaLinux-9'
                 sh 'yum -y install php'
+		sh 'php -v'
                 sh 'yum -y install git'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
@@ -117,6 +127,7 @@ pipeline {
             }
             steps {
                 sh 'yum -y install php'
+		sh 'php -v'
                 sh 'yum -y install git'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
@@ -134,6 +145,7 @@ pipeline {
             }
             steps {
                 sh 'yum -y install php'
+		sh 'php -v'
                 sh 'yum -y install git'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
@@ -152,6 +164,7 @@ pipeline {
                 sh 'apt-get update'
                 sh 'apt -y install git'
                 sh 'apt -y install php'
+		sh 'php -v'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
@@ -169,6 +182,7 @@ pipeline {
                 sh 'apt-get update'
                 sh 'apt -y install git'
                 sh 'apt -y install php'
+		sh 'php -v'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
@@ -186,6 +200,7 @@ pipeline {
                 sh 'apt-get update'
                 sh 'apt -y install git'
                 sh 'apt -y install php'
+		sh 'php -v'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
@@ -203,6 +218,7 @@ pipeline {
                 sh 'apt-get update'
                 sh 'apt -y install git'
                 sh 'apt -y install php'
+		sh 'php -v'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
@@ -220,6 +236,7 @@ pipeline {
                 sh 'apt-get update'
                 sh 'apt -y install git'
                 sh 'apt -y install php'
+		sh 'php -v'
                 sh 'rm -rf apache2buddy'
                 sh 'git clone  http://github.com/richardforth/apache2buddy.git'
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
