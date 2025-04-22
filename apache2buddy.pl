@@ -414,7 +414,8 @@ sub check_os_support {
 				'redhat',
 				'Rocky Linux',
 				'AlmaLinux',
-				'Amazon Linux');
+				'Amazon Linux',
+				'Oracle Linux Server');
 	my %sol = map { $_ => 1 } @supported_os_list;
 	
 	my @ubuntu_os_list = ('Ubuntu', 'ubuntu');
@@ -428,6 +429,9 @@ sub check_os_support {
 	
 	my @redhat_os_list = ('Red Hat Enterprise Linux', 'redhat', 'Rocky Linux', 'AlmaLinux');
 	my %rol = map { $_ => 1 } @redhat_os_list;
+
+	my @oracle_os_list = ('Oracle Linux Server');
+	my %ool = map { $_ => 1 } @oracle_os_list;
 
 	# https://wiki.debian.org/DebianReleases
 	my @debian_supported_versions = ('12');
