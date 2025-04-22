@@ -2684,7 +2684,7 @@ sub get_hostname {
         if ( $hostname eq '' ) {
                 show_crit_box();
                 print "Cannot find the 'hostname' executable.";
-                exit;
+                exit 1;
         } else {
                 our $servername = `$hostname -f`;
                 chomp($servername);
