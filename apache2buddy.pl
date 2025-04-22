@@ -334,7 +334,7 @@ sub get_os_platform {
 
         $distro   = $os_info{NAME};
         $version  = $os_info{VERSION_ID};
-        $codename = $os_info{VERSION_CODENAME} || ($os_info{VERSION} =~ /\((\w+)\)/ ? $1 : undef);
+        $codename = $os_info{VERSION_CODENAME} || ($os_info{VERSION} =~ /\(([^)]+)\)/ ? $1 : undef);
     }
 
     # Fallback: /etc/lsb-release
