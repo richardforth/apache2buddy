@@ -2724,12 +2724,39 @@ sub get_ip {
                 print "Cannot find the 'curl' executable.";
                 exit 1;
         } else {
-                our $ip = `$curl -s myip.dnsomatic.com`;
-                if ($ip =~ /429 Too Many Requests/) {
-                        return "x.x.x.x";
-                } else {
-                        return $ip;
+	        # create an array of possible providers
+	        # https://linuxconfig.org/how-to-use-curl-to-get-public-ip-address
+	        my @ip_providers = ('myip.dnsomatic.com',
+		                    'ipv4.icanhazip.com',
+			   	    'ifconfig.me',
+				    'api.ipify.org',
+				    'bot.whatismyipaddress.com',
+				    'ipinfo.io/ip',
+				    'ipecho.net/plain');
+		our $ip = '';
+		my $max_tries = scalar @ip_providers;
+		my %tried;
+		
+		# Randomise the selection
+	        while ($max_tries--) {
+                      # Pick a random provider that hasn't been tried yet
+                      my @remaining = grep { !$tried{$_} } @ip_providers;
+                      last unless @remaining;  # safety check
+
+                      my $ip_provider = $remaining[ rand @remaining ];
+                      $tried{$ip_provider} = 1;
+
+                      $ip = `$curl -s $ip_provider`;
+                      chomp($ip);
+
+                      # Basic validation: is it an IP address and not an error page?
+                      if ($ip =~ /^(\d{1,3}\.){3}\d{1,3}$/) {
+                              return $ip;
+                      }
                 }
+                # this is now much less likely to return a x.x.x.x now ee have an
+		# array of providers, rather than relying on one provider alone
+		return "x.x.x.x" # fallback only if no providers returned an IP
         }
 }
 
