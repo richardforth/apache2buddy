@@ -222,7 +222,7 @@ our $SKIPUPDATES = 0;
 # MORE OUR VARIABLES #
 ######################
 
-# "cache" for os platrofm information: ( distro, version, codename )
+# "cache" for os platform information: ( distro, version, codename )
 our @os_platform;
 
 
@@ -256,7 +256,7 @@ if ( @ARGV > 0 ) {
 	}
 	print "\n";
 	usage;
-	exit;
+	exit 1;
 }
 
 if ( $REPORT ) {
@@ -334,7 +334,7 @@ sub get_os_platform {
 
         $distro   = $os_info{NAME};
         $version  = $os_info{VERSION_ID};
-        $codename = $os_info{VERSION_CODENAME} || ($os_info{VERSION} =~ /\((\w+)\)/ ? $1 : undef);
+        $codename = $os_info{VERSION_CODENAME} || ($os_info{VERSION} =~ /\(([^)]+)\)/ ? $1 : undef);
     }
 
     # Fallback: /etc/lsb-release
@@ -414,7 +414,8 @@ sub check_os_support {
 				'redhat',
 				'Rocky Linux',
 				'AlmaLinux',
-				'Amazon Linux');
+				'Amazon Linux',
+				'Oracle Linux Server');
 	my %sol = map { $_ => 1 } @supported_os_list;
 	
 	my @ubuntu_os_list = ('Ubuntu', 'ubuntu');
@@ -429,17 +430,25 @@ sub check_os_support {
 	my @redhat_os_list = ('Red Hat Enterprise Linux', 'redhat', 'Rocky Linux', 'AlmaLinux');
 	my %rol = map { $_ => 1 } @redhat_os_list;
 
+	my @oracle_os_list = ('Oracle Linux Server');
+	my %ool = map { $_ => 1 } @oracle_os_list;
+
 	# https://wiki.debian.org/DebianReleases
 	my @debian_supported_versions = ('12');
 	my %dsv = map { $_ => 1 } @debian_supported_versions;
 
 	# https://www.ubuntu.com/info/release-end-of-life
-	my @ubuntu_supported_versions = ('20.04','22.04','24.04');
+	my @ubuntu_supported_versions = ('18.04','20.04','22.04','24.04');
 	my %usv = map { $_ => 1 } @ubuntu_supported_versions;
 
 	# https://endoflife.date/amazon-linux
         my @amazon_supported_versions = ('2', '2023');
 	my %amznsv = map { $_ => 1 } @amazon_supported_versions;
+	
+	# https://endoflife.date/oracle-linux
+	my @oracle_supported_versions = ('8.10','9.5');
+	my %osv = map { $_ => 1 } @oracle_supported_versions;
+
 
 	if (exists($sol{$distro})) {
 		if ( ! $NOOK ) { show_ok_box(); print "This distro is supported by apache2buddy.pl.\n" }	
@@ -490,7 +499,6 @@ sub check_os_support {
 				if ( ! $NOOK ) { show_ok_box(); print "This distro version is supported by apache2buddy.pl.\n" }
 			}
 		} elsif (exists($amzol{$distro})) {
-			# Currently there is only one supported distribution of Amazon Linux 
 			if ( $VERBOSE ) { print "VERBOSE -> Amazon Linux Version: ". $version . "\n"}
 			my @amazon_version = split('\.', $version);
 			if ( $VERBOSE ) {
@@ -501,6 +509,22 @@ sub check_os_support {
 			my $major_amazon_version = $amazon_version[0];
 			if ( $VERBOSE ) { print "VERBOSE -> Major Amazon Version Detected ". $major_amazon_version . "\n"}
 			if ($major_amazon_version lt 2 ) {
+				show_crit_box(); print "${RED}ERROR: This distro version (${CYAN}$version${ENDC}${RED}) is not supported by apache2buddy.pl.${ENDC}\n";
+			 	exit 1;
+			} else {
+				if ( ! $NOOK ) { show_ok_box(); print "This distro version is supported by apache2buddy.pl.\n" }
+			}
+		} elsif (exists($ool{$distro})) {
+			if ( $VERBOSE ) { print "VERBOSE -> Oracle Linux Version: ". $version . "\n"}
+			my @oracle_linux_version = split('\.', $version);
+			if ( $VERBOSE ) {
+				foreach my $item (@oracle_linux_version) {
+					print "VERBOSE: ".  $item . "\n";
+				}
+       			}
+			my $major_oracle_linux_version = $oracle_linux_version[0];
+			if ( $VERBOSE ) { print "VERBOSE -> Major Oracle Linux Version Detected ". $major_oracle_linux_version . "\n"}
+			if ($major_oracle_linux_version lt 8 ) {
 				show_crit_box(); print "${RED}ERROR: This distro version (${CYAN}$version${ENDC}${RED}) is not supported by apache2buddy.pl.${ENDC}\n";
 				exit 1;
 			} else {
@@ -1029,7 +1053,7 @@ sub test_process {
 		print "${RED}Something went wrong, and I suspect you have a syntax error in your apache configuration.${ENDC}\n";
 		show_crit_box();
 		print "${YELLOW}See \"${CYAN}systemctl status httpd.service${ENDC}\" ${YELLOW}and \"${CYAN}journalctl -xe${ENDC}\" ${YELLOW}for details.${ENDC}\n";
-		exit;
+		exit 1;
 	} else {
 		# check for output matching Apache'
         if ( $output[0] =~ m/^Server version.*Apache\/[0-9].*/ ) {
@@ -1063,7 +1087,7 @@ sub get_pid {
 		}
 		elsif ( $pid != $_ ) {
 			print "There are multiple PIDs listening on port $port.";
-			exit;
+			exit 1;
 		}
 		else { 
 			$pid = $_;
@@ -1174,7 +1198,7 @@ sub itk_detect {
 	if ( $model  =~ /(.*)itk(.*)/)  {
 		show_crit_box(); print "MPM ITK was detected, apache2buddy.pl does odd things so we quit. Sorry.\n";
 		show_advisory_box(); print "MPM ITK is not supported. Unload the module and try again.\n\n";
-		exit;
+		exit 1;
 	}
 }
 
@@ -1631,7 +1655,7 @@ sub preflight_checks {
 	if ( $uid ne '0' ) {
 		show_crit_box();
  	      	print "This script must be run as root.\n";
-        	exit;
+        	exit 1;
 	} else {
 		if ( ! $NOOK ) { show_ok_box(); print "This script is being run as root.\n" }
 	}
@@ -1646,7 +1670,7 @@ sub preflight_checks {
 	if ( $pmap !~ m/.*\/pmap/ ) { 
 		show_crit_box(); 
 		print "Unable to locate the pmap utility. This script requires pmap to analyze Apache's memory consumption.\n";
-		exit;
+		exit 1;
 	} else {
 		if ( ! $NOOK ) { show_ok_box(); print "The utility 'pmap' exists and is available for use: ${CYAN}$pmap${ENDC}\n" }
 	}
@@ -1662,7 +1686,7 @@ sub preflight_checks {
 		show_crit_box(); 
 		print "Unable to locate the netstat utility. This script requires netstat to determine the port that apache is listening on.\n";
 		show_info_box(); print "${YELLOW}To fix this make sure the net-tools package is installed.${ENDC}\n";
-		exit;
+		exit 1;
 	} else {
 		if ( ! $NOOK ) { show_ok_box(); print "The utility 'netstat' exists and is available for use: ${CYAN}$netstat${ENDC}\n" }
         }
@@ -1706,7 +1730,7 @@ sub preflight_checks {
               		print "Unable to locate the apache2ctl utility. This script now requires apache2ctl to analyze Apache's vhost configurations.\n";
        		        show_info_box();
               		print "It looks like you might be running something else, other than apache..\n";
-			exit;
+			exit 1;
         	} else {
                 	if ( ! $NOOK ) { show_ok_box(); print "The utility 'apache2ctl' exists and is available for use: ${CYAN}$apachectl${ENDC}\n" }
         	}
@@ -1723,7 +1747,7 @@ sub preflight_checks {
 		show_crit_box();
 		print "INVALID PORT: $port. ";
 		print "Valid port numbers are 1-65534.\n";
-		exit;
+		exit 1;
 	} else {
 		if ( ! $NOOK ) { show_ok_box(); print "The port \(port ${CYAN}$port${ENDC}\) is a valid port.\n" }
 	}
@@ -1770,7 +1794,7 @@ sub preflight_checks {
 		$pid = $process_info[1];
 		if ( not $pid ) {
                         show_crit_box; print "apache process not found.\n";
-                        exit;
+                        exit 1;
                 } else {
                         my $command = `netstat -plnt | egrep "httpd|apache2"`;
                         if ( $command =~ /:+(\d+)/ ) { our $real_port = $1 }
@@ -1796,7 +1820,7 @@ sub preflight_checks {
 		if ( $process_name eq 0 ) {
 			show_crit_box();
 			print "Unable to determine the name of the process. Is apache running on this server?\n";
-			exit;
+			exit 1;
 		}
 	
 		# Check 7
@@ -1821,7 +1845,7 @@ sub preflight_checks {
 			if ( !$pid ) {
 				show_crit_box();
 		                print "Could not find Apache process. Exiting...\n";
-				exit;
+				exit 1;
 		        } else {
 				# If we found it, then reset the proces_name, and version.
 				$process_name = get_process_name($pid);
@@ -1866,7 +1890,7 @@ sub preflight_checks {
 	} else {
 		show_crit_box();
 		print "Apache configuration file does not exist: ".$full_apache_conf_file_path."\n";
-		exit;
+		exit 1;
 	}
 	
 	# check 12
@@ -1875,7 +1899,7 @@ sub preflight_checks {
 	if ( $model eq 0 ) {
 		show_crit_box();
 		print "Unable to determine whether Apache is using worker or prefork\n";
-		exit;
+		exit 1;
 	} else {
                 # account for '\x{d}' strangeness
                 $model =~ s/\x{d}//;
@@ -1966,7 +1990,7 @@ sub preflight_checks {
 					our $pidfile = "/var/run/httpd.pid";
 				} else {
 					if ( ! $NOINFO ) { show_crit_box; print "${RED}Unable to locate pid file${ENDC}. Exiting.\n" } 
-					exit;
+					exit 1;
 				}
 			} elsif ($pidfile_cfv eq "/var/run/apache2/apache2\$SUFFIX.pid") {
 				our $pidfile = "/var/run/apache2/apache2.pid";
@@ -1987,7 +2011,7 @@ sub preflight_checks {
 					our $pidguess = `find /opt/apache2/run | grep pid`;
 				} else {
 					show_crit_box; print "${RED}Unable to locate pid file${ENDC}. Exiting.\n";
-					exit;
+					exit 1;
 				}
 				our $pidguess;
 				chomp($pidguess);
@@ -1996,7 +2020,7 @@ sub preflight_checks {
 					if ($VERBOSE) { print "VERBOSE: Located pidfile at $pidfile.\n" }
 				} else {
 					show_crit_box; print "${RED}Unable to locate pid file${ENDC}. Exiting.\n";
-					exit;
+					exit 1;
 				}
 			}
 		}
@@ -2006,7 +2030,7 @@ sub preflight_checks {
 			if ( ! $NOINFO ) { show_info_box; print "Actual pidfile is ${CYAN}$pidfile${ENDC}.\n" } 
 		} else {
 			if ( ! $NOINFO ) { show_crit_box; print "${RED}Unable to open pid file $pidfile${ENDC}. Exiting.\n" } 
-			exit;
+			exit 1;
 		}
 		# get pid
 		our $pidfile;
@@ -2028,7 +2052,7 @@ sub preflight_checks {
 				show_advisory_box; print "${YELLOW}For more information, see ${CYAN}https://github.com/richardforth/apache2buddy/wiki/50MB-Parent-PID-Issue${ENDC}\n";
 				show_advisory_box; print "${YELLOW}If you are desperate, try ${CYAN}-P${YELLOW} or ${CYAN}--no-check-pid${ENDC}${YELLOW}.${ENDC}\n";
 				show_info_box; print "Exiting.\n";
-				exit;
+				exit 1;
 			} else {
 				if ( ! $NOOK ) { show_ok_box; print "Memory usage of parent PID is less than 50MB: ${CYAN}$ppid_mem_usage Kilobytes${ENDC}.\n" }
 			}
@@ -2311,7 +2335,7 @@ sub detect_package_updates {
 			} else {
 				show_crit_box(); print "${RED}There was an error getting package updates, please check your package manager for potential problems, and try again.${ENDC}\n";
 				show_crit_box(); print "${RED} - Or use ${CYAN}--skip-updates${ENDC}\n";
-				exit;
+				exit 1;
 			}
 		}
 	} else {
@@ -2684,7 +2708,7 @@ sub get_hostname {
         if ( $hostname eq '' ) {
                 show_crit_box();
                 print "Cannot find the 'hostname' executable.";
-                exit;
+                exit 1;
         } else {
                 our $servername = `$hostname -f`;
                 chomp($servername);
@@ -2698,14 +2722,41 @@ sub get_ip {
         if ( $curl eq '' ) {
                 show_crit_box;
                 print "Cannot find the 'curl' executable.";
-                exit;
+                exit 1;
         } else {
-                our $ip = `$curl -s myip.dnsomatic.com`;
-                if ($ip =~ /429 Too Many Requests/) {
-                        return "x.x.x.x";
-                } else {
-                        return $ip;
+	        # create an array of possible providers
+	        # https://linuxconfig.org/how-to-use-curl-to-get-public-ip-address
+	        my @ip_providers = ('myip.dnsomatic.com',
+		                    'ipv4.icanhazip.com',
+			   	    'ifconfig.me',
+				    'api.ipify.org',
+				    'bot.whatismyipaddress.com',
+				    'ipinfo.io/ip',
+				    'ipecho.net/plain');
+		our $ip = '';
+		my $max_tries = scalar @ip_providers;
+		my %tried;
+		
+		# Randomise the selection
+	        while ($max_tries--) {
+                      # Pick a random provider that hasn't been tried yet
+                      my @remaining = grep { !$tried{$_} } @ip_providers;
+                      last unless @remaining;  # safety check
+
+                      my $ip_provider = $remaining[ rand @remaining ];
+                      $tried{$ip_provider} = 1;
+
+                      $ip = `$curl -s $ip_provider`;
+                      chomp($ip);
+
+                      # Basic validation: is it an IP address and not an error page?
+                      if ($ip =~ /^(\d{1,3}\.){3}\d{1,3}$/) {
+                              return $ip;
+                      }
                 }
+                # this is now much less likely to return a x.x.x.x now ee have an
+		# array of providers, rather than relying on one provider alone
+		return "x.x.x.x" # fallback only if no providers returned an IP
         }
 }
 
@@ -2824,7 +2875,7 @@ if ( $model eq "prefork") {
 		print "Gluster Mem: $gluster_memory_usage_mbytes\n";	
 		print "----------------------------------------------\n";
 		print "Remaining Mem: $memory_remaining\n";	
-		exit;
+		exit 1;
 	}		
 	my $average_potential_use_pct_remain = round(($average_potential_use/$memory_remaining)*100);
 	if ( $average_potential_use_pct > 100  or $average_potential_use_pct_remain > 100 ) {
