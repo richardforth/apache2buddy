@@ -256,7 +256,7 @@ if ( @ARGV > 0 ) {
 	}
 	print "\n";
 	usage;
-	exit;
+	exit 1;
 }
 
 if ( $REPORT ) {
@@ -1053,7 +1053,7 @@ sub test_process {
 		print "${RED}Something went wrong, and I suspect you have a syntax error in your apache configuration.${ENDC}\n";
 		show_crit_box();
 		print "${YELLOW}See \"${CYAN}systemctl status httpd.service${ENDC}\" ${YELLOW}and \"${CYAN}journalctl -xe${ENDC}\" ${YELLOW}for details.${ENDC}\n";
-		exit;
+		exit 1;
 	} else {
 		# check for output matching Apache'
         if ( $output[0] =~ m/^Server version.*Apache\/[0-9].*/ ) {
@@ -1087,7 +1087,7 @@ sub get_pid {
 		}
 		elsif ( $pid != $_ ) {
 			print "There are multiple PIDs listening on port $port.";
-			exit;
+			exit 1;
 		}
 		else { 
 			$pid = $_;
@@ -1198,7 +1198,7 @@ sub itk_detect {
 	if ( $model  =~ /(.*)itk(.*)/)  {
 		show_crit_box(); print "MPM ITK was detected, apache2buddy.pl does odd things so we quit. Sorry.\n";
 		show_advisory_box(); print "MPM ITK is not supported. Unload the module and try again.\n\n";
-		exit;
+		exit 1;
 	}
 }
 
@@ -1655,7 +1655,7 @@ sub preflight_checks {
 	if ( $uid ne '0' ) {
 		show_crit_box();
  	      	print "This script must be run as root.\n";
-        	exit;
+        	exit 1;
 	} else {
 		if ( ! $NOOK ) { show_ok_box(); print "This script is being run as root.\n" }
 	}
@@ -1670,7 +1670,7 @@ sub preflight_checks {
 	if ( $pmap !~ m/.*\/pmap/ ) { 
 		show_crit_box(); 
 		print "Unable to locate the pmap utility. This script requires pmap to analyze Apache's memory consumption.\n";
-		exit;
+		exit 1;
 	} else {
 		if ( ! $NOOK ) { show_ok_box(); print "The utility 'pmap' exists and is available for use: ${CYAN}$pmap${ENDC}\n" }
 	}
@@ -1686,7 +1686,7 @@ sub preflight_checks {
 		show_crit_box(); 
 		print "Unable to locate the netstat utility. This script requires netstat to determine the port that apache is listening on.\n";
 		show_info_box(); print "${YELLOW}To fix this make sure the net-tools package is installed.${ENDC}\n";
-		exit;
+		exit 1;
 	} else {
 		if ( ! $NOOK ) { show_ok_box(); print "The utility 'netstat' exists and is available for use: ${CYAN}$netstat${ENDC}\n" }
         }
@@ -1730,7 +1730,7 @@ sub preflight_checks {
               		print "Unable to locate the apache2ctl utility. This script now requires apache2ctl to analyze Apache's vhost configurations.\n";
        		        show_info_box();
               		print "It looks like you might be running something else, other than apache..\n";
-			exit;
+			exit 1;
         	} else {
                 	if ( ! $NOOK ) { show_ok_box(); print "The utility 'apache2ctl' exists and is available for use: ${CYAN}$apachectl${ENDC}\n" }
         	}
@@ -1747,7 +1747,7 @@ sub preflight_checks {
 		show_crit_box();
 		print "INVALID PORT: $port. ";
 		print "Valid port numbers are 1-65534.\n";
-		exit;
+		exit 1;
 	} else {
 		if ( ! $NOOK ) { show_ok_box(); print "The port \(port ${CYAN}$port${ENDC}\) is a valid port.\n" }
 	}
@@ -1820,7 +1820,7 @@ sub preflight_checks {
 		if ( $process_name eq 0 ) {
 			show_crit_box();
 			print "Unable to determine the name of the process. Is apache running on this server?\n";
-			exit;
+			exit 1;
 		}
 	
 		# Check 7
@@ -1845,7 +1845,7 @@ sub preflight_checks {
 			if ( !$pid ) {
 				show_crit_box();
 		                print "Could not find Apache process. Exiting...\n";
-				exit;
+				exit 1;
 		        } else {
 				# If we found it, then reset the proces_name, and version.
 				$process_name = get_process_name($pid);
@@ -1890,7 +1890,7 @@ sub preflight_checks {
 	} else {
 		show_crit_box();
 		print "Apache configuration file does not exist: ".$full_apache_conf_file_path."\n";
-		exit;
+		exit 1;
 	}
 	
 	# check 12
@@ -1899,7 +1899,7 @@ sub preflight_checks {
 	if ( $model eq 0 ) {
 		show_crit_box();
 		print "Unable to determine whether Apache is using worker or prefork\n";
-		exit;
+		exit 1;
 	} else {
                 # account for '\x{d}' strangeness
                 $model =~ s/\x{d}//;
@@ -1990,7 +1990,7 @@ sub preflight_checks {
 					our $pidfile = "/var/run/httpd.pid";
 				} else {
 					if ( ! $NOINFO ) { show_crit_box; print "${RED}Unable to locate pid file${ENDC}. Exiting.\n" } 
-					exit;
+					exit 1;
 				}
 			} elsif ($pidfile_cfv eq "/var/run/apache2/apache2\$SUFFIX.pid") {
 				our $pidfile = "/var/run/apache2/apache2.pid";
@@ -2011,7 +2011,7 @@ sub preflight_checks {
 					our $pidguess = `find /opt/apache2/run | grep pid`;
 				} else {
 					show_crit_box; print "${RED}Unable to locate pid file${ENDC}. Exiting.\n";
-					exit;
+					exit 1;
 				}
 				our $pidguess;
 				chomp($pidguess);
@@ -2020,7 +2020,7 @@ sub preflight_checks {
 					if ($VERBOSE) { print "VERBOSE: Located pidfile at $pidfile.\n" }
 				} else {
 					show_crit_box; print "${RED}Unable to locate pid file${ENDC}. Exiting.\n";
-					exit;
+					exit 1;
 				}
 			}
 		}
@@ -2030,7 +2030,7 @@ sub preflight_checks {
 			if ( ! $NOINFO ) { show_info_box; print "Actual pidfile is ${CYAN}$pidfile${ENDC}.\n" } 
 		} else {
 			if ( ! $NOINFO ) { show_crit_box; print "${RED}Unable to open pid file $pidfile${ENDC}. Exiting.\n" } 
-			exit;
+			exit 1;
 		}
 		# get pid
 		our $pidfile;
@@ -2052,7 +2052,7 @@ sub preflight_checks {
 				show_advisory_box; print "${YELLOW}For more information, see ${CYAN}https://github.com/richardforth/apache2buddy/wiki/50MB-Parent-PID-Issue${ENDC}\n";
 				show_advisory_box; print "${YELLOW}If you are desperate, try ${CYAN}-P${YELLOW} or ${CYAN}--no-check-pid${ENDC}${YELLOW}.${ENDC}\n";
 				show_info_box; print "Exiting.\n";
-				exit;
+				exit 1;
 			} else {
 				if ( ! $NOOK ) { show_ok_box; print "Memory usage of parent PID is less than 50MB: ${CYAN}$ppid_mem_usage Kilobytes${ENDC}.\n" }
 			}
@@ -2335,7 +2335,7 @@ sub detect_package_updates {
 			} else {
 				show_crit_box(); print "${RED}There was an error getting package updates, please check your package manager for potential problems, and try again.${ENDC}\n";
 				show_crit_box(); print "${RED} - Or use ${CYAN}--skip-updates${ENDC}\n";
-				exit;
+				exit 1;
 			}
 		}
 	} else {
@@ -2875,7 +2875,7 @@ if ( $model eq "prefork") {
 		print "Gluster Mem: $gluster_memory_usage_mbytes\n";	
 		print "----------------------------------------------\n";
 		print "Remaining Mem: $memory_remaining\n";	
-		exit;
+		exit 1;
 	}		
 	my $average_potential_use_pct_remain = round(($average_potential_use/$memory_remaining)*100);
 	if ( $average_potential_use_pct > 100  or $average_potential_use_pct_remain > 100 ) {
