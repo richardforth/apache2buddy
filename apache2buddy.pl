@@ -444,6 +444,11 @@ sub check_os_support {
 	# https://endoflife.date/amazon-linux
         my @amazon_supported_versions = ('2', '2023');
 	my %amznsv = map { $_ => 1 } @amazon_supported_versions;
+	
+	# https://endoflife.date/oracle-linux
+	my @oracle_supported_versions = ('8.10','9.5');
+	my %osv = map { $_ => 1 } @oracle_supported_versions;
+
 
 	if (exists($sol{$distro})) {
 		if ( ! $NOOK ) { show_ok_box(); print "This distro is supported by apache2buddy.pl.\n" }	
@@ -494,7 +499,6 @@ sub check_os_support {
 				if ( ! $NOOK ) { show_ok_box(); print "This distro version is supported by apache2buddy.pl.\n" }
 			}
 		} elsif (exists($amzol{$distro})) {
-			# Currently there is only one supported distribution of Amazon Linux 
 			if ( $VERBOSE ) { print "VERBOSE -> Amazon Linux Version: ". $version . "\n"}
 			my @amazon_version = split('\.', $version);
 			if ( $VERBOSE ) {
@@ -505,6 +509,22 @@ sub check_os_support {
 			my $major_amazon_version = $amazon_version[0];
 			if ( $VERBOSE ) { print "VERBOSE -> Major Amazon Version Detected ". $major_amazon_version . "\n"}
 			if ($major_amazon_version lt 2 ) {
+				show_crit_box(); print "${RED}ERROR: This distro version (${CYAN}$version${ENDC}${RED}) is not supported by apache2buddy.pl.${ENDC}\n";
+			 	exit 1;
+			} else {
+				if ( ! $NOOK ) { show_ok_box(); print "This distro version is supported by apache2buddy.pl.\n" }
+			}
+		} elsif (exists($ool{$distro})) {
+			if ( $VERBOSE ) { print "VERBOSE -> Oracle Linux Version: ". $version . "\n"}
+			my @oracle_linux_version = split('\.', $version);
+			if ( $VERBOSE ) {
+				foreach my $item (@oracle_linux_version) {
+					print "VERBOSE: ".  $item . "\n";
+				}
+       			}
+			my $major_oracle_linux_version = $oracle_linux_version[0];
+			if ( $VERBOSE ) { print "VERBOSE -> Major Oracle Linux Version Detected ". $major_oracle_linux_version . "\n"}
+			if ($major_oracle_linux_version lt 8 ) {
 				show_crit_box(); print "${RED}ERROR: This distro version (${CYAN}$version${ENDC}${RED}) is not supported by apache2buddy.pl.${ENDC}\n";
 				exit 1;
 			} else {
