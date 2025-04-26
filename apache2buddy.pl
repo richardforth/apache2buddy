@@ -1349,9 +1349,6 @@ sub get_php_setting {
 	
 	# code to address bug raised in issue #197 (cli memory limits on debian / ubuntu)
 	# sanity check if we are using cli or apache 
-	print "--- marker: '$php_bin' ---";
-	chomp ($php_bin);
-	print "--- marker: '$php_bin' ---";
 	my $config = `$php_bin -r 'phpinfo(1);' | grep -i config | grep -i loaded`;
 	chomp ($config);
 	if ($VERBOSE) { print "VERBOSE: PHP: $config\n" }
@@ -2560,6 +2557,7 @@ sub detect_maxclients_hits {
 sub detect_php_memory_limit {
 	if ( ! $NOINFO) {
 		my $php_exe =  `which php`;
+		chomp ($php_exe);
 		our $apache_proc_php_mem_limit = get_php_setting($php_exe, 'memory_limit');
 		show_info_box(); print "Your PHP Memory Limit (Per-Process) is ${CYAN}".$apache_proc_php_mem_limit."${ENDC}.\n";
 		if ($apache_proc_php_mem_limit eq "-1") {
