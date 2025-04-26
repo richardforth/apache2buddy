@@ -1349,6 +1349,9 @@ sub get_php_setting {
 	
 	# code to address bug raised in issue #197 (cli memory limits on debian / ubuntu)
 	# sanity check if we are using cli or apache 
+	print "--- marker: '$php_bin' ---";
+	chomp ($php_bin);
+	print "--- marker: '$php_bin' ---";
 	my $config = `$php_bin -r 'phpinfo(1);' | grep -i config | grep -i loaded`;
 	chomp ($config);
 	if ($VERBOSE) { print "VERBOSE: PHP: $config\n" }
