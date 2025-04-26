@@ -941,8 +941,8 @@ sub get_memory_usage {
 
 	# get a list of the pid's for apache running as the appropriate user
 	my @pids = `ps aux | grep $process_name | grep "^$apache_user_running" | awk \'{ print \$2 }\'`;
-
-	print "VERBOSE: @pids" if $main::VERBOSE;
+	print "VERBOSE: List pids:\n @pids" if $main::VERBOSE;
+	
         # if length of @pids is still zero then die with an error.
 	if (@pids == 0) {
                 show_crit_box(); print ("Error getting a list of PIDs\n");
@@ -965,7 +965,7 @@ sub get_memory_usage {
 		$pid_mem_usage =~ s/K//;
 		chomp($pid_mem_usage);
 
-		print "VERBOSE: Memory usage by PID ".$_." is ".$pid_mem_usage."K\n" if $main::VERBOSE;
+		print "VERBOSE: Memory usage by PID ".$pid." is ".$pid_mem_usage."K\n" if $main::VERBOSE;
 		
 		# on a busy system, the grep output will return the pid for the
 		# grep process itself, which will be gone by the time we get 
