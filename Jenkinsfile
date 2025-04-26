@@ -13,6 +13,24 @@ pipeline {
     }    
  
     stages { 
+        stage('Docker BitnamiApache Staging') { 
+            agent { 
+                docker {
+                    image 'forric/bitnamiapache:latest'
+                    args '-u root:root --cap-add SYS_PTRACE'
+                    reuseNode true
+                } 
+            }
+            steps {
+                sh 'install_packages php'
+		sh 'php -v'
+                sh 'sed -i 's|^Include conf/bitnami/mpm_event.conf|#Include conf/bitnami/mpm_event.conf|' /opt/bitnami/apache2/conf/bitnami/httpd.conf'
+		sh 'sed -i 's|^#Include conf/bitnami/mpm_prefork.conf|Include conf/bitnami/mpm_prefork.conf|' /opt/bitnami/apache2/conf/bitnami/httpd.conf'
+		sh '/opt/bitnami/apache2/bin/apachectl -t'
+		sh 'cat /etc/os-release'
+                sh '/opt/bitnami/apache/bin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+            }
+        }
         stage('Docker OracleLinux8 Staging') { 
             agent { 
                 docker {
