@@ -1373,8 +1373,12 @@ sub get_php_setting {
 					# This block should ideally never be hit.
 				        if (@files != 1) {
 					        our $real_config = "Not Found.";
-			                }
-				}	
+			                } else {
+						our $real_config = @files[0];
+					}
+				}  else {
+                                        our $real_config = @files[0];
+                                }	
 			} else {
 				our $real_config = @files[0];
 			}
