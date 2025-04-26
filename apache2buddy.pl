@@ -1365,11 +1365,16 @@ sub get_php_setting {
 			if (@files != 1) {
 				# looking for /etc/php/*/fpm/php.ini
 				my @files = glob "/etc/php/*/fpm/php.ini";
-			
-                                # This block should never be hit.
+
+			        # extra special sauce for Gentoo
 				if (@files != 1) {
-					our $real_config = "Not Found.";
-			        }
+					my @files = glob "/etc/php/apache2-php*/php.ini";
+                                
+					# This block should ideally never be hit.
+				        if (@files != 1) {
+					        our $real_config = "Not Found.";
+			                }
+				}	
 			} else {
 				our $real_config = @files[0];
 			}
