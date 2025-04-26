@@ -539,6 +539,10 @@ sub check_os_support {
 				if ( ! $NOOK ) { show_ok_box(); print "This distro version is supported by apache2buddy.pl.\n" }
 			}	
 		}
+
+	} elsif ($distro eq "Gentoo") {
+		show_crit_box(); print "${RED}ERROR: Gentoo is a reasonable endeavour, and is not \"officially\" supported by apache2buddy.pl.${ENDC}\n";
+		 show_advisory_box(); print "To run anyway (at your own risk), try -O or --skip-os-version-check.\n"
 	} else {
 		show_crit_box(); print "${RED}ERROR: This distro is not supported by apache2buddy.pl.${ENDC}\n";
 		# list supported OS distros
