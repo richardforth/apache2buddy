@@ -1215,6 +1215,7 @@ sub itk_detect {
 sub get_apache_model {
         our $model;
         my ( $process_name ) = @_;
+	print "--- marker: $process_name ---";
 	if ( $process_name =~ m{^\Q/usr/bin/apache2\E} ) {
                 # In apache2, worker / prefork / event are no longer compiled-in.
                 # Instead, with is a loaded in module
@@ -1242,6 +1243,7 @@ sub get_apache_model {
                 if ($VERBOSE) { print "VERBOSE: Return Value: $model\n" }
                 return $model;
         } else {
+		print "--- marker ---";
                 if ($VERBOSE) { print "VERBOSE: Looking for model, first trying 'apachectl'.\n" }
                 $model = `apachectl -M 2>&1 | egrep "worker|prefork|event|itk"`;
 		# Gotcha in Fedora 32  - so likely to appear in later versions of apache (circa 2.4.43)
