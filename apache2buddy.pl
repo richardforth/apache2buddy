@@ -2342,9 +2342,11 @@ sub detect_package_updates {
 		$package_update = `apt-get update 2>&1 >/dev/null && dpkg --get-selections | xargs apt-cache policy | grep -1 Installed | sed -r 's/(:|Installed: |Candidate: )//' | uniq -u | tac | sed '/--/I,+1 d' | tac | sed '\$d' | sed -n 1~2p | egrep "^php|^apache2"`;
 	} elsif (ucfirst($distro) eq "SUSE Linux Enterprise Server") {
 		$package_update = `zypper list-updates | egrep "^httpd|^php"`;
-	} elsif (ucfirst($distro) eq "Bitnami" or ucfirst($distro) eq "Bitnami (Debian GNU/Linux)") {
+	} elsif (ucfirst($distro) eq "Bitnami" or
+	       	ucfirst($distro) eq "Bitnami (Debian GNU/Linux)" or
+	        ucfirst($distro) eq "Gentoo") {
 		# we skip package updates for bitnami as it's considered immutable
-		show_warn_box(); print "Skipping updates for Bitnami, it is considered immutable, and doesn't have a full package system.\n";
+		show_warn_box(); print "Skipping update checks for Bitnami and Gentoo.\n";
 		return 0;
 	} else {
 		$package_update = `yum check-update | egrep "^httpd|^php"`;
