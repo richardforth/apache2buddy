@@ -334,7 +334,13 @@ sub get_os_platform {
 
         $distro   = $os_info{NAME};
         $version  = $os_info{VERSION_ID};
-        $codename = $os_info{VERSION_CODENAME} || ($os_info{VERSION} =~ /\(([^)]+)\)/ ? $1 : undef);
+	# add an escape hatch for Gentoo which doesnt use codenames
+	if ($distro eq "Gentoo") {
+		$codename = "unknown";
+	} else {
+                $codename = $os_info{VERSION_CODENAME} || ($os_info{VERSION} =~ /\(([^)]+)\)/ ? $1 : undef);
+	}
+
     }
 
     # Fallback: /etc/lsb-release
@@ -409,6 +415,8 @@ sub check_os_support {
 				'Debian',
 				'debian',
 				'Debian GNU/Linux',
+				'Bitnami',
+				'Bitnami (Debian GNU/Linux)',
 				'Red Hat Enterprise Linux',
 				'Red Hat Enterprise Linux Server',
 				'redhat',
@@ -424,7 +432,7 @@ sub check_os_support {
 	my @amazon_os_list = ('AmazonLinux', 'Amazon Linux');
 	my %amzol = map { $_ => 1 } @amazon_os_list;
 	
-	my @debian_os_list = ('Debian', 'debian');
+	my @debian_os_list = ('Debian', 'debian', 'Bitnami', 'Bitnami (Debian GNU/Linux)');
 	my %dol = map { $_ => 1 } @debian_os_list;
 	
 	my @redhat_os_list = ('Red Hat Enterprise Linux', 'redhat', 'Rocky Linux', 'AlmaLinux');
@@ -2324,6 +2332,10 @@ sub detect_package_updates {
 		$package_update = `apt-get update 2>&1 >/dev/null && dpkg --get-selections | xargs apt-cache policy | grep -1 Installed | sed -r 's/(:|Installed: |Candidate: )//' | uniq -u | tac | sed '/--/I,+1 d' | tac | sed '\$d' | sed -n 1~2p | egrep "^php|^apache2"`;
 	} elsif (ucfirst($distro) eq "SUSE Linux Enterprise Server") {
 		$package_update = `zypper list-updates | egrep "^httpd|^php"`;
+	} elsif (ucfirst($distro) eq "Bitnami" or ucfirst($distro) eq "Bitnami (Debian GNU/Linux)") {
+		# we skip package updates for bitnami as it's considered immutable
+		show_warn_box(); print "Skipping updates for Bitnami, it is considered immutable, and doesn't have a full package system.\n";
+		return 0;
 	} else {
 		$package_update = `yum check-update | egrep "^httpd|^php"`;
 	}
@@ -2402,10 +2414,20 @@ sub detect_virtualmin_version {
 }
 
 sub detect_php_fatal_errors {
+	our ($model, $process_name) = @_;
+	
+	# quit early if bitnami, as those logs go to stdout and are no good for us
+	if ($process_name eq "/opt/bitnami/apache/bin/httpd" ) {
+		show_warn_box(); print "Skipping checking logs for PHP Fatal Errors, Bitnami sends these to stdout.\n";
+		return 0;
+	}
+
 	print "VERBOSE: Checking logs for PHP Fatal Errors, this can take some time...\n" if $main::VERBOSE;
 	our $phpfpm_detected;
-	our ($model, $process_name) = @_;
-	if ($model eq "worker") {
+
+	# we can only check apache logs for PHP errors in prefork mode
+	if (! $model eq "prefork") {
+		show_warn_box(); print "Skipping checking logs for PHP Fatal Errors, we can only do this if apache is running in prefork and with mod_php running under apache.\n";
 		return;
 	}
 
@@ -2473,7 +2495,14 @@ sub grep_php_fatal {
 
 sub detect_maxclients_hits {
 	our ($model, $process_name) = @_;
-	if ($model eq "worker") {
+	# quit early if bitnami, as those logs go to stdout and are no good for us
+	if ($process_name eq "/opt/bitnami/apache/bin/httpd" ) {
+		show_warn_box(); print "Skipping checking logs for MaxClients/MaxRequestWorkers hits, Bitnami sends these to stdout.\n";
+		return 0;
+	}
+	# we can only check apache logs for PHP errors in prefork mode
+	if ( ! $model eq "prefork") {
+		show_warn_box(); print "Skipping checking logs for MaxClients/MaxRequestWorkers Hits, we can only do this if apache is running in prefork.\n";
 		return;
 	}
 	our $hit = 0;

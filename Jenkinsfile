@@ -13,6 +13,21 @@ pipeline {
     }    
  
     stages { 
+        stage('Docker BitnamiApache Staging') { 
+            agent { 
+                docker {
+                    image 'forric/bitnamiapache:latest'
+                    args '-u root:root --cap-add SYS_PTRACE'
+                    reuseNode true
+                } 
+            }
+            steps {
+                sh 'install_packages php'
+		sh 'php -v'
+		sh 'cat /etc/os-release'
+                sh '/opt/bitnami/apache/bin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+            }
+        }
         stage('Docker OracleLinux8 Staging') { 
             agent { 
                 docker {
@@ -22,15 +37,13 @@ pipeline {
                 } 
             }
             steps {
-                sh 'yum -y install git hostname'
+                sh 'yum -y install hostname'
                 sh 'yum -y install php'
 		sh 'php -v'
                 sh 'sed -i \'s/^LoadModule mpm_event_module/#LoadModule mpm_event_module/\' /etc/httpd/conf.modules.d/00-mpm.conf'
 		sh 'sed -i \'s/^#LoadModule mpm_prefork_module/LoadModule mpm_prefork_module/\' /etc/httpd/conf.modules.d/00-mpm.conf'
 		sh 'apachectl configtest'
 		sh 'cat /etc/os-release'
-                sh 'rm -rf apache2buddy'
-                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -43,15 +56,13 @@ pipeline {
                 } 
             }
             steps {
-                sh 'yum -y install git hostname'
+                sh 'yum -y install hostname'
                 sh 'yum -y install php'
 		sh 'php -v'
                 sh 'sed -i \'s/^LoadModule mpm_event_module/#LoadModule mpm_event_module/\' /etc/httpd/conf.modules.d/00-mpm.conf'
 		sh 'sed -i \'s/^#LoadModule mpm_prefork_module/LoadModule mpm_prefork_module/\' /etc/httpd/conf.modules.d/00-mpm.conf'
 		sh 'apachectl configtest'
 		sh 'cat /etc/os-release'
-                sh 'rm -rf apache2buddy'
-                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -70,9 +81,6 @@ pipeline {
 		sh 'sed -i \'s/^#LoadModule mpm_prefork_module/LoadModule mpm_prefork_module/\' /etc/httpd/conf.modules.d/00-mpm.conf'
 		sh 'apachectl configtest'
 		sh 'cat /etc/os-release'
-                sh 'yum -y install git'
-                sh 'rm -rf apache2buddy'
-                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -91,9 +99,6 @@ pipeline {
 		sh 'sed -i \'s/^#LoadModule mpm_prefork_module/LoadModule mpm_prefork_module/\' /etc/httpd/conf.modules.d/00-mpm.conf'
 		sh 'apachectl configtest'
 		sh 'cat /etc/os-release'
-                sh 'yum -y install git'
-                sh 'rm -rf apache2buddy'
-                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -113,9 +118,6 @@ pipeline {
 		sh 'sed -i \'s/^#LoadModule mpm_prefork_module/LoadModule mpm_prefork_module/\' /etc/httpd/conf.modules.d/00-mpm.conf'
 		sh 'apachectl configtest'
 		sh 'cat /etc/os-release'
-                sh 'yum -y install git'
-                sh 'rm -rf apache2buddy'
-                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -135,9 +137,6 @@ pipeline {
 		sh 'sed -i \'s/^#LoadModule mpm_prefork_module/LoadModule mpm_prefork_module/\' /etc/httpd/conf.modules.d/00-mpm.conf'
 		sh 'apachectl configtest'
 		sh 'cat /etc/os-release'
-                sh 'yum -y install git'
-                sh 'rm -rf apache2buddy'
-                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -156,9 +155,6 @@ pipeline {
 		sh 'sed -i \'s/^#LoadModule mpm_prefork_module/LoadModule mpm_prefork_module/\' /etc/httpd/conf.modules.d/00-mpm.conf'
 		sh 'apachectl configtest'
 		sh 'cat /etc/os-release'
-                sh 'yum -y install git'
-                sh 'rm -rf apache2buddy'
-                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -177,9 +173,6 @@ pipeline {
 		sh 'sed -i \'s/^#LoadModule mpm_prefork_module/LoadModule mpm_prefork_module/\' /etc/httpd/conf.modules.d/00-mpm.conf'
 		sh 'apachectl configtest'
 		sh 'cat /etc/os-release'
-                sh 'yum -y install git'
-                sh 'rm -rf apache2buddy'
-                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -193,12 +186,9 @@ pipeline {
             }
             steps {
                 sh 'apt-get update'
-                sh 'apt -y install git'
                 sh 'apt -y install php'
 		sh 'php -v'
 		sh 'cat /etc/os-release'
-                sh 'rm -rf apache2buddy'
-                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -212,12 +202,9 @@ pipeline {
             }
             steps {
                 sh 'apt-get update'
-                sh 'apt -y install git'
                 sh 'apt -y install php'
 		sh 'php -v'
 		sh 'cat /etc/os-release'
-                sh 'rm -rf apache2buddy'
-                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -231,12 +218,9 @@ pipeline {
             }
             steps {
                 sh 'apt-get update'
-                sh 'apt -y install git'
                 sh 'apt -y install php'
 		sh 'php -v'
 		sh 'cat /etc/os-release'
-                sh 'rm -rf apache2buddy'
-                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -250,12 +234,9 @@ pipeline {
             }
             steps {
                 sh 'apt-get update'
-                sh 'apt -y install git'
                 sh 'apt -y install php'
 		sh 'php -v'
 		sh 'cat /etc/os-release'
-                sh 'rm -rf apache2buddy'
-                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -269,12 +250,9 @@ pipeline {
             }
             steps {
                 sh 'apt-get update'
-                sh 'apt -y install git'
                 sh 'apt -y install php'
 		sh 'php -v'
 		sh 'cat /etc/os-release'
-                sh 'rm -rf apache2buddy'
-                sh 'git clone  http://github.com/richardforth/apache2buddy.git'
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
