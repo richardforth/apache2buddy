@@ -1,13 +1,13 @@
-.PHONY: check lazytest lazyadd lazypush
+.PHONY: lazysums lazycheck lazytest lazyadd lazypush
 
-check: 
+lazycheck: 
 	md5sum apache2buddy.pl
 	cat md5sums.txt
 	@echo
 	sha256sum apache2buddy.pl
 	cat sha256sums.txt
 
-sums: md5sums.txt sha256sums.txt
+lazysums: md5sums.txt sha256sums.txt
 
 md5sums.txt: apache2buddy.pl
 	md5sum apache2buddy.pl >md5sums.txt
