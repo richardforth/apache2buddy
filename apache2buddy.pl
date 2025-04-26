@@ -409,6 +409,8 @@ sub check_os_support {
 				'Debian',
 				'debian',
 				'Debian GNU/Linux',
+				'Bitnami',
+				'Bitnami (Debian GNU/Linux)',
 				'Red Hat Enterprise Linux',
 				'Red Hat Enterprise Linux Server',
 				'redhat',
@@ -424,7 +426,7 @@ sub check_os_support {
 	my @amazon_os_list = ('AmazonLinux', 'Amazon Linux');
 	my %amzol = map { $_ => 1 } @amazon_os_list;
 	
-	my @debian_os_list = ('Debian', 'debian');
+	my @debian_os_list = ('Debian', 'debian', 'Bitnami', 'Bitnami (Debian GNU/Linux)');
 	my %dol = map { $_ => 1 } @debian_os_list;
 	
 	my @redhat_os_list = ('Red Hat Enterprise Linux', 'redhat', 'Rocky Linux', 'AlmaLinux');
@@ -2324,6 +2326,10 @@ sub detect_package_updates {
 		$package_update = `apt-get update 2>&1 >/dev/null && dpkg --get-selections | xargs apt-cache policy | grep -1 Installed | sed -r 's/(:|Installed: |Candidate: )//' | uniq -u | tac | sed '/--/I,+1 d' | tac | sed '\$d' | sed -n 1~2p | egrep "^php|^apache2"`;
 	} elsif (ucfirst($distro) eq "SUSE Linux Enterprise Server") {
 		$package_update = `zypper list-updates | egrep "^httpd|^php"`;
+	} elsif (ucfirst($distro) eq "Bitnami" or ucfirst($distro) eq "Bitnami (Debian GNU/Linux)") {
+		# we skip package updates for bitnami as it's considered immutable
+		show_warn_box(); print "Skipping updates for Bitnami, it is considered immutable, and doesn't have a full package system.\n";
+		return 0;
 	} else {
 		$package_update = `yum check-update | egrep "^httpd|^php"`;
 	}
