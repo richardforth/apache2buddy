@@ -2408,10 +2408,19 @@ sub detect_virtualmin_version {
 }
 
 sub detect_php_fatal_errors {
+	our ($model, $process_name) = @_;
+	
+	# quit early if bitnami, as those logs go to stdout and are no good for us
+	if ($process_name eq "/opt/bitnami/apache/bin/httpd" ) {
+		show_warn_box(); print "Skipping checking logs, Bitnami sends these to stdout.";
+		return 0;
+	}
+
 	print "VERBOSE: Checking logs for PHP Fatal Errors, this can take some time...\n" if $main::VERBOSE;
 	our $phpfpm_detected;
-	our ($model, $process_name) = @_;
-	if ($model eq "worker") {
+
+	# we can only check apache logs for PHP errors in prefork mode
+	if (! $model eq "prefork") {
 		return;
 	}
 
