@@ -332,12 +332,14 @@ sub get_os_platform {
         }
         close $fh;
 
-	print "-- marker --\n";
         $distro   = $os_info{NAME};
         $version  = $os_info{VERSION_ID};
-	print "-- marker --\n";
-        $codename = $os_info{VERSION_CODENAME} || ($os_info{VERSION} =~ /\(([^)]+)\)/ ? $1 : undef);
-	print "-- marker --\n";
+	# add an escape hatch for Gentoo which doesnt use codenames
+	if ($distro eq "Gentoo") {
+		$codename = "unknown";
+	} else {
+                $codename = $os_info{VERSION_CODENAME} || ($os_info{VERSION} =~ /\(([^)]+)\)/ ? $1 : undef);
+	}
 
     }
 
