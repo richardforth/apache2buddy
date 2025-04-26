@@ -2412,7 +2412,7 @@ sub detect_php_fatal_errors {
 	
 	# quit early if bitnami, as those logs go to stdout and are no good for us
 	if ($process_name eq "/opt/bitnami/apache/bin/httpd" ) {
-		show_warn_box(); print "Skipping checking logs, Bitnami sends these to stdout.";
+		show_warn_box(); print "Skipping checking logs for PHP Fatal Errors, Bitnami sends these to stdout.\n";
 		return 0;
 	}
 
@@ -2421,6 +2421,7 @@ sub detect_php_fatal_errors {
 
 	# we can only check apache logs for PHP errors in prefork mode
 	if (! $model eq "prefork") {
+		show_warn_box(); print "Skipping checking logs for PHP Fatal Errors, we can only do this if apache is running in prefork and with mod_php running under apache.\n";
 		return;
 	}
 
@@ -2490,11 +2491,12 @@ sub detect_maxclients_hits {
 	our ($model, $process_name) = @_;
 	# quit early if bitnami, as those logs go to stdout and are no good for us
 	if ($process_name eq "/opt/bitnami/apache/bin/httpd" ) {
-		show_warn_box(); print "Skipping checking logs, Bitnami sends these to stdout.";
+		show_warn_box(); print "Skipping checking logs for MaxClients/MaxRequestWorkers hits, Bitnami sends these to stdout.\n";
 		return 0;
 	}
 	# we can only check apache logs for PHP errors in prefork mode
 	if ( ! $model eq "prefork") {
+		show_warn_box(); print "Skipping checking logs for MaxClients/MaxRequestWorkers Hits, we can only do this if apache is running in prefork.\n";
 		return;
 	}
 	our $hit = 0;
