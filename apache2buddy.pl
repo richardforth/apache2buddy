@@ -2488,7 +2488,13 @@ sub grep_php_fatal {
 
 sub detect_maxclients_hits {
 	our ($model, $process_name) = @_;
-	if ($model eq "worker") {
+	# quit early if bitnami, as those logs go to stdout and are no good for us
+	if ($process_name eq "/opt/bitnami/apache/bin/httpd" ) {
+		show_warn_box(); print "Skipping checking logs, Bitnami sends these to stdout.";
+		return 0;
+	}
+	# we can only check apache logs for PHP errors in prefork mode
+	if ( ! $model eq "prefork") {
 		return;
 	}
 	our $hit = 0;
