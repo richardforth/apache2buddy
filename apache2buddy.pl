@@ -940,8 +940,9 @@ sub get_memory_usage {
 	print "VERBOSE: Get '".$search_type."' memory usage\n" if $main::VERBOSE;
 
 	# get a list of the pid's for apache running as the appropriate user
-	my @pids = `ps aux | grep $process_name | grep "^$apache_user_running\\s" | awk \'{ print \$2 }\'`;
+	my @pids = `ps aux | grep $process_name | grep "^$apache_user_running" | awk \'{ print \$2 }\'`;
 
+	print "VERBOSE: @pids" if $main::VERBOSE;
         # if length of @pids is still zero then die with an error.
 	if (@pids == 0) {
                 show_crit_box(); print ("Error getting a list of PIDs\n");
