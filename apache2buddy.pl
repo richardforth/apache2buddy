@@ -1215,7 +1215,7 @@ sub itk_detect {
 sub get_apache_model {
         our $model;
         my ( $process_name ) = @_;
-	if ( $process_name =~ m{^\Q/usr/sbin/apache2\E} )
+	if ( $process_name =~ m{^\Q/usr/sbin/apache2\E} ) {
                 # In apache2, worker / prefork / event are no longer compiled-in.
                 # Instead, with is a loaded in module
                 # differing from httpd / httpd24u's process directly, in ubuntu we need to run apache2ctl.
