@@ -332,9 +332,13 @@ sub get_os_platform {
         }
         close $fh;
 
+	print "-- marker --\n";
         $distro   = $os_info{NAME};
         $version  = $os_info{VERSION_ID};
+	print "-- marker --\n";
         $codename = $os_info{VERSION_CODENAME} || ($os_info{VERSION} =~ /\(([^)]+)\)/ ? $1 : undef);
+	print "-- marker --\n";
+
     }
 
     # Fallback: /etc/lsb-release
