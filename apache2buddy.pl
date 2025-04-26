@@ -940,8 +940,9 @@ sub get_memory_usage {
 	print "VERBOSE: Get '".$search_type."' memory usage\n" if $main::VERBOSE;
 
 	# get a list of the pid's for apache running as the appropriate user
-	my @pids = `ps aux | grep $process_name | grep "^$apache_user_running\\s" | awk \'{ print \$2 }\'`;
-
+	my @pids = `ps aux | grep $process_name | grep "^$apache_user_running" | awk \'{ print \$2 }\'`;
+	print "VERBOSE: List pids:\n @pids" if $main::VERBOSE;
+	
         # if length of @pids is still zero then die with an error.
 	if (@pids == 0) {
                 show_crit_box(); print ("Error getting a list of PIDs\n");
@@ -964,7 +965,7 @@ sub get_memory_usage {
 		$pid_mem_usage =~ s/K//;
 		chomp($pid_mem_usage);
 
-		print "VERBOSE: Memory usage by PID ".$_." is ".$pid_mem_usage."K\n" if $main::VERBOSE;
+		print "VERBOSE: Memory usage by PID ".$pid." is ".$pid_mem_usage."K\n" if $main::VERBOSE;
 		
 		# on a busy system, the grep output will return the pid for the
 		# grep process itself, which will be gone by the time we get 
@@ -1215,7 +1216,7 @@ sub itk_detect {
 sub get_apache_model {
         our $model;
         my ( $process_name ) = @_;
-        if ( $process_name eq "/usr/sbin/apache2") {
+	if ( $process_name =~ m{^\Q/usr/bin/apache2\E} ) {
                 # In apache2, worker / prefork / event are no longer compiled-in.
                 # Instead, with is a loaded in module
                 # differing from httpd / httpd24u's process directly, in ubuntu we need to run apache2ctl.
@@ -1349,7 +1350,7 @@ sub get_php_setting {
 	
 	# code to address bug raised in issue #197 (cli memory limits on debian / ubuntu)
 	# sanity check if we are using cli or apache 
-	my $config = `php -r "phpinfo(1);" | grep -i config | grep -i loaded`;
+	my $config = `$php_bin -r 'phpinfo(1);' | grep -i config | grep -i loaded`;
 	chomp ($config);
 	if ($VERBOSE) { print "VERBOSE: PHP: $config\n" }
 
@@ -1365,11 +1366,20 @@ sub get_php_setting {
 			if (@files != 1) {
 				# looking for /etc/php/*/fpm/php.ini
 				my @files = glob "/etc/php/*/fpm/php.ini";
-			
-                                # This block should never be hit.
+
+			        # extra special sauce for Gentoo
 				if (@files != 1) {
-					our $real_config = "Not Found.";
-			        }
+					my @files = glob "/etc/php/apache2-php*/php.ini";
+                                
+					# This block should ideally never be hit.
+				        if (@files != 1) {
+					        our $real_config = "Not Found.";
+			                } else {
+						our $real_config = @files[0];
+					}
+				}  else {
+                                        our $real_config = @files[0];
+                                }	
 			} else {
 				our $real_config = @files[0];
 			}
@@ -1377,9 +1387,9 @@ sub get_php_setting {
 
 		our $real_config;
 		if ($VERBOSE) { print "VERBOSE: PHP: Real apache php.ini file is $real_config, using that...\n" }
-		our @php_config_array = `php -c $real_config -r "phpinfo(4);"`;
+		our @php_config_array = `$php_bin -c $real_config -r 'phpinfo(4);'`;
 	} else {
-		our @php_config_array = `php -r "phpinfo(4);"`;
+		our @php_config_array = `$php_bin -r 'phpinfo(4);'`;
 	}
 
 	my @results;
@@ -2332,9 +2342,11 @@ sub detect_package_updates {
 		$package_update = `apt-get update 2>&1 >/dev/null && dpkg --get-selections | xargs apt-cache policy | grep -1 Installed | sed -r 's/(:|Installed: |Candidate: )//' | uniq -u | tac | sed '/--/I,+1 d' | tac | sed '\$d' | sed -n 1~2p | egrep "^php|^apache2"`;
 	} elsif (ucfirst($distro) eq "SUSE Linux Enterprise Server") {
 		$package_update = `zypper list-updates | egrep "^httpd|^php"`;
-	} elsif (ucfirst($distro) eq "Bitnami" or ucfirst($distro) eq "Bitnami (Debian GNU/Linux)") {
+	} elsif (ucfirst($distro) eq "Bitnami" or
+	       	ucfirst($distro) eq "Bitnami (Debian GNU/Linux)" or
+	        ucfirst($distro) eq "Gentoo") {
 		# we skip package updates for bitnami as it's considered immutable
-		show_warn_box(); print "Skipping updates for Bitnami, it is considered immutable, and doesn't have a full package system.\n";
+		show_warn_box(); print "Skipping update checks for Bitnami and Gentoo.\n";
 		return 0;
 	} else {
 		$package_update = `yum check-update | egrep "^httpd|^php"`;
@@ -2557,9 +2569,10 @@ sub detect_maxclients_hits {
 sub detect_php_memory_limit {
 	if ( ! $NOINFO) {
 		my $php_exe =  `which php`;
-		our $apache_proc_php = get_php_setting($php_exe, 'memory_limit');
-		show_info_box(); print "Your PHP Memory Limit (Per-Process) is ${CYAN}".$apache_proc_php."${ENDC}.\n";
-		if ($apache_proc_php eq "-1") {
+		chomp ($php_exe);
+		our $apache_proc_php_mem_limit = get_php_setting($php_exe, 'memory_limit');
+		show_info_box(); print "Your PHP Memory Limit (Per-Process) is ${CYAN}".$apache_proc_php_mem_limit."${ENDC}.\n";
+		if ($apache_proc_php_mem_limit eq "-1") {
 			show_advisory_box(); print "You should set a PHP Memory Limit (-1 is ${CYAN}UNLIMITED${ENDC}) which is not recommended.\n";
 		}
 	}
