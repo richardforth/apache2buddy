@@ -28,23 +28,25 @@ pipeline {
                 } 
             }
             steps {
-                sh 'install_packages php'
-		sh 'php -v'
-		sh 'cat /etc/os-release'
-		sh 'echo "Checking with netstat..."'
-                def output_netstat = sh '/opt/bitnami/apache/bin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
-                if (!output_netstat.contains("[ OK ] Using 'netstat' for socket statistics.")) {
-                    error "Output validation failed"
-                }
-		sh 'echo "installing iproute2 which contains ss..."'
-		sh 'install_packages iproute2'
-		sh 'echo "Checking with ss..."'
-                def output_ss = sh '/opt/bitnami/apache/bin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
-                if (!output_ss.contains("[ OK ] Using 'ss' for socket statistics.")) {
-                    error "Output validation failed"
+                script {
+                    sh 'install_packages php'
+                    sh 'php -v'
+		    sh 'cat /etc/os-release'
+		    sh 'echo "Checking with netstat..."'
+                    def output_netstat = sh '/opt/bitnami/apache/bin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                    if (!output_netstat.contains("[ OK ] Using 'netstat' for socket statistics.")) {
+                        error "Output validation failed"
+                    }
+		    sh 'echo "installing iproute2 which contains ss..."'
+		    sh 'install_packages iproute2'
+		    sh 'echo "Checking with ss..."'
+                    def output_ss = sh '/opt/bitnami/apache/bin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                    if (!output_ss.contains("[ OK ] Using 'ss' for socket statistics.")) {
+                        error "Output validation failed"
+                    }
                 }
             }
-        }
+	}
         stage('Docker OracleLinux8 Staging') { 
             agent { 
                 docker {
