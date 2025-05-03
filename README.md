@@ -40,10 +40,11 @@ Note that CentOS is now removed from support and no longer tested against, as it
 
 [![Generic badge](https://img.shields.io/badge/Gentoo-Unable%20To%20Test-red.svg)](https://shields.io/)
 [![Generic badge](https://img.shields.io/badge/Gentoo-Works%20with%20dash%20O%20Option-yellow.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/Gentoo-Passing%20in%20the%20wild-green.svg)](https://shields.io/)
 
 
 The rule of thumb is if its not listed, its not supported.
-Anything that says Unable To Test, means it  should work, but can't be dockerized and isnt included in the Jenkinsfile for licensing reasons, and needs field testing. Badges for those items will be updated to "Passing" if seen working in the wild.
+Anything that says Unable To Test, means it  should work, but can't be dockerized and isnt included in the Jenkinsfile for licensing reasons, and needs field testing. Badges for those items will be updated to "Passing in the wild" if seen working in the wild.
 
 # execution
 
