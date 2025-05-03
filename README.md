@@ -1,25 +1,50 @@
 # Status
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/richardforth/apache2buddy/graphs/commit-activity) [![GitHub latest commit](https://badgen.net/github/last-commit/richardforth/apache2buddy)](https://GitHub.com/richardforth/apache2buddy/commit/) [![GitHub stars](https://badgen.net/github/stars/richardforth/apache2buddy)](https://GitHub.com/richardforth/apache2buddy/stargazers/) [![Generic badge](https://img.shields.io/badge/Tests-Some%20Deprecation%20Warnings-yellow.svg)](https://shields.io/)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/richardforth/apache2buddy/graphs/commit-activity) [![GitHub latest commit](https://badgen.net/github/last-commit/richardforth/apache2buddy)](https://GitHub.com/richardforth/apache2buddy/commit/) [![GitHub stars](https://badgen.net/github/stars/richardforth/apache2buddy)](https://GitHub.com/richardforth/apache2buddy/stargazers/) [![Generic badge](https://img.shields.io/badge/Tests-Passing-green.svg)](https://shields.io/)
 
-# Supported OSes
+# OS Support Staus
 
- [![Generic badge](https://img.shields.io/badge/RHEL%208-Unable%20To%20Test-red.svg)](https://shields.io/)
- [![Generic badge](https://img.shields.io/badge/Centos%208-Passing-Greenw.svg)](https://shields.io/)
- [![Generic badge](https://img.shields.io/badge/Rocky%20Linux%208-Passing-Green.svg)](https://shields.io/)
- [![Generic badge](https://img.shields.io/badge/AlmaLinux%208-Failing-Red.svg)](https://shields.io/)
+## RedHat Family
 
+Red Hat is Licenced so I am unable to test it, but it is technically supported -  testing is done via OracleLinux, Rocky and Alma.
+Note that CentOS is now removed from support and no longer tested against, as it is deprecated, but you  can try with -O to skip OS os checks.
 
-[![Generic badge](https://img.shields.io/badge/Debian%209-Passing:%20EOL%20DATE%20June%2030%202022-yellow.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Debian%2010-Passing-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Debian%2011-Passing%20with%20minor%20errors%20or%20warnings-yellow.svg)](https://shields.io/)
+ [![Generic badge](https://img.shields.io/badge/RHEL-Unable%20To%20Test-red.svg)](https://shields.io/)
 
-[![Generic badge](https://img.shields.io/badge/Ubuntu%2018.04-Passing-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Ubuntu%2020.04-Passing-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Ubuntu%2022.04-Passing-Green.svg)](https://shields.io/)
+ [![Generic badge](https://img.shields.io/badge/Centos-Removed-red.svg)](https://shields.io/)
 
-[![Generic badge](https://img.shields.io/badge/Amazon%20Linux%202-Passing%20with%20minor%20errors%20or%20warnings-yellow.svg)](https://shields.io/)
+ [![Generic badge](https://img.shields.io/badge/Oracle%20Linux%208-Passing-green.svg)](https://shields.io/)
+ [![Generic badge](https://img.shields.io/badge/Oracle%20Linux%209-Passing-green.svg)](https://shields.io/)
 
-[![Generic badge](https://img.shields.io/badge/SLES%2012-Unable%20To%20Test-red.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/SLES%2015-Unable%20To%20Test-red.svg)](https://shields.io/)
+ [![Generic badge](https://img.shields.io/badge/Rocky%20Linux%208-Passing-green.svg)](https://shields.io/)
+ [![Generic badge](https://img.shields.io/badge/Rocky%20Linux%209-Passing-green.svg)](https://shields.io/)
+
+ [![Generic badge](https://img.shields.io/badge/AlmaLinux%208-Passing-green.svg)](https://shields.io/)
+ [![Generic badge](https://img.shields.io/badge/AlmaLinux%209-Passing-green.svg)](https://shields.io/)
+
+ [![Generic badge](https://img.shields.io/badge/AmazonLinux%202-Passing-green.svg)](https://shields.io/)
+ [![Generic badge](https://img.shields.io/badge/AmazonLinux%202023-Passing-green.svg)](https://shields.io/)
+
+## Ubuntu
+
+[![Generic badge](https://img.shields.io/badge/Ubuntu%2018.04-Passing-green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Ubuntu%2020.04-Passing-green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Ubuntu%2022.04-Passing-green.svg)](https://shields.io/)
+
+## Debian
+
+[![Generic badge](https://img.shields.io/badge/Debian%2012-Passing-green.svg)](https://shields.io/)
+
+## Bitnami (apache)
+
+[![Generic badge](https://img.shields.io/badge/Bitnami%20apache-Passing-green.svg)](https://shields.io/)
+
+## Gentoo
+
+[![Generic badge](https://img.shields.io/badge/Gentoo-Unable%20To%20Test-red.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/Gentoo-Works%20with%20dash%20O%20Option-yellow.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/Gentoo-Passing%20in%20the%20wild-green.svg)](https://shields.io/)
 
 
 The rule of thumb is if its not listed, its not supported.
-Anything that says Unable To Test, means it  should work, but can't be dockerized and isnt included in the Jenkinsfile for licensing reasons, and needs field testing. Badges for those items will be updated to "Passing" if seen working in the wild.
+Anything that says Unable To Test, means it  should work, but can't be dockerized and isnt included in the Jenkinsfile for licensing reasons, and needs field testing. Badges for those items will be updated to "Passing in the wild" if seen working in the wild.
 
 # execution
 
@@ -32,31 +57,36 @@ Best Practice is to check the code against either the md5sums or sha256sums (or 
 
 Example:
 
-	--- a2bchk.sh ---
-	#!/bin/bash
-	# example of testing md5sums prior to execution
-	
-	scriptmd5sum=`curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/master/apache2buddy.pl | md5sum | cut -d " " -f1`
-	originmd5sum=`curl -s https://raw.githubusercontent.com/richardforth/apache2buddy/master/md5sums.txt | cut -d " " -f1`
-	echo $scriptmd5sum
-	echo $originmd5sum
-	if [ $scriptmd5sum == $originmd5sum ]
-	then
-	        scriptsha256sum=`curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/master/apache2buddy.pl | sha256sum | cut -d " " -f1`
-	        originsha256sum=`curl -s https://raw.githubusercontent.com/richardforth/apache2buddy/master/sha256sums.txt | cut -d " " -f1`
-	        echo $scriptsha256sum
-	        echo $originsha256sum
-	        if [ $scriptsha256sum == $originsha256sum ]
-	        then
-	                # execute the code, its safe - we can assume
-	                curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/master/apache2buddy.pl | perl
-	        else
-	                echo "Error: SHA256SUM mismatch, execution aborted."
-	        fi
-	else
-	        echo "Error: MD5SUM mismatch, execution aborted."
-	fi
-	--- end a2bchk.sh ---
+```bash
+#!/bin/bash
+# example of testing md5sums prior to execution
+
+scriptmd5sum=`curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/master/apache2buddy.pl | md5sum | cut -d " " -f1`
+originmd5sum=`curl -s https://raw.githubusercontent.com/richardforth/apache2buddy/master/md5sums.txt | cut -d " " -f1`
+echo $scriptmd5sum
+echo $originmd5sum
+if [ $scriptmd5sum == $originmd5sum ]
+then
+        scriptsha256sum=`curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/master/apache2buddy.pl | sha256sum | cut -d " " -f1`
+        originsha256sum=`curl -s https://raw.githubusercontent.com/richardforth/apache2buddy/master/sha256sums.txt | cut -d " " -f1`
+        echo $scriptsha256sum
+        echo $originsha256sum
+        if [ $scriptsha256sum == $originsha256sum ]
+        then
+                # execute the code, its safe - we can assume
+                curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/master/apache2buddy.pl | perl
+		if [[ $? != 0 ]]; then
+			exit 1
+		fi
+        else
+                echo "Error: SHA256SUM mismatch, execution aborted."
+		exit 1
+        fi
+else
+        echo "Error: MD5SUM mismatch, execution aborted."
+	exit 1
+fi
+```
 
 If the md5sums or sha256sums do not match, then changes have been made and its untested, so do not proceed until they match.
 
