@@ -32,11 +32,17 @@ pipeline {
 		sh 'php -v'
 		sh 'cat /etc/os-release'
 		sh 'echo "Checking with netstat..."'
-                sh '/opt/bitnami/apache/bin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_netstat = sh '/opt/bitnami/apache/bin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                if (!output_netstat.contains("[ OK ] Using 'netstat' for socket statistics.")) {
+                    error "Output validation failed"
+                }
 		sh 'echo "installing iproute2 which contains ss..."'
 		sh 'install_packages iproute2'
 		sh 'echo "Checking with ss..."'
-                sh '/opt/bitnami/apache/bin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_ss = sh '/opt/bitnami/apache/bin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                if (!output_ss.contains("[ OK ] Using 'ss' for socket statistics.")) {
+                    error "Output validation failed"
+                }
             }
         }
         stage('Docker OracleLinux8 Staging') { 
@@ -57,13 +63,19 @@ pipeline {
 		sh 'cat /etc/os-release'
 		sh 'echo "Oracle Linux defaults to ss"'
 		sh 'echo "Checking with  ss..."'
-                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_ss = sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                if (!output_ss.contains("[ OK ] Using 'ss' for socket statistics.")) {
+                    error "Output validation failed"
+                }
 		sh 'echo "Removing iproute which contained ss command"'
                 sh 'yum -y remove iproute'
 		sh 'echo "installing net-tools" which includes netstat'
                 sh 'yum -y install net-tools'
 		sh 'echo "Testing with netstat..."'
-                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_netstat = sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                if (!output_netstat.contains("[ OK ] Using 'netstat' for socket statistics.")) {
+                    error "Output validation failed"
+                }
             }
         }
         stage('Docker OracleLinux9 Staging') { 
@@ -84,13 +96,19 @@ pipeline {
 		sh 'cat /etc/os-release'
 		sh 'echo "Oracle Linux defaults to ss"'
 		sh 'echo "Checking with  ss..."'
-                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_ss = sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                if (!output_ss.contains("[ OK ] Using 'ss' for socket statistics.")) {
+                    error "Output validation failed"
+                }
 		sh 'echo "Removing iproute which contained ss command"'
                 sh 'yum -y remove iproute'
 		sh 'echo "installing net-tools" which includes netstat'
                 sh 'yum -y install net-tools'
 		sh 'echo "Testing with netstat..."'
-                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_netstat = sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                if (!output_netstat.contains("[ OK ] Using 'netstat' for socket statistics.")) {
+                    error "Output validation failed"
+                }
             }
         }
         stage('Docker RockyLinux8 Staging') { 
@@ -109,11 +127,17 @@ pipeline {
 		sh 'apachectl configtest'
 		sh 'cat /etc/os-release'
 		sh 'echo "Checking with netstat..."'
-                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_netstat = sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		if (!output_netstat.contains("[ OK ] Using 'netstat' for socket statistics.")) {
+                    error "Output validation failed"
+                }
 		sh 'echo "Installing iproute which contains ss command"'
 		sh 'yum -y install iproute'
 		sh 'echo "Checking with ss..."'
-                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_ss = sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		if (!output_ss.contains("[ OK ] Using 'ss' for socket statistics.")) {
+                    error "Output validation failed"
+                }
             }
         }
         stage('Docker RockyLinux9 Staging') { 
@@ -132,11 +156,17 @@ pipeline {
 		sh 'apachectl configtest'
 		sh 'cat /etc/os-release'
 		sh 'echo "Checking with netstat..."'
-                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_netstat = sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		if (!output_netstat.contains("[ OK ] Using 'netstat' for socket statistics.")) {
+                    error "Output validation failed"
+                }
 		sh 'echo "Installing iproute which contains ss command"'
 		sh 'yum -y install iproute'
 		sh 'echo "Checking with ss..."'
-                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_ss = sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		if (!output_ss.contains("[ OK ] Using 'ss' for socket statistics.")) {
+                    error "Output validation failed"
+                }
             }
         }
         stage('Docker AlmaLinux8 Staging') { 
@@ -156,11 +186,17 @@ pipeline {
 		sh 'apachectl configtest'
 		sh 'cat /etc/os-release'
 		sh 'echo "Checking with netstat..."'
-                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_netstat = sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		if (!output_netstat.contains("[ OK ] Using 'netstat' for socket statistics.")) {
+                    error "Output validation failed"
+                }
 		sh 'echo "Installing iproute which contains ss command"'
 		sh 'yum -y install iproute'
 		sh 'echo "Checking with ss..."'
-                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_ss = sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		if (!output_ss.contains("[ OK ] Using 'ss' for socket statistics.")) {
+                    error "Output validation failed"
+                }
             }
         }
         stage('Docker AlmaLinux9 Staging') { 
@@ -180,11 +216,17 @@ pipeline {
 		sh 'apachectl configtest'
 		sh 'cat /etc/os-release'
 		sh 'echo "Checking with netstat..."'
-                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_netstat = sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		if (!output_netstat.contains("[ OK ] Using 'netstat' for socket statistics.")) {
+                    error "Output validation failed"
+                }
 		sh 'echo "Installing iproute which contains ss command"'
 		sh 'yum -y install iproute'
 		sh 'echo "Checking with ss..."'
-                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_ss = sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		if (!output_ss.contains("[ OK ] Using 'ss' for socket statistics.")) {
+                    error "Output validation failed"
+                }
             }
         }
         stage('Docker AmazonLinux 2 Staging') { 
@@ -203,11 +245,17 @@ pipeline {
 		sh 'apachectl configtest'
 		sh 'cat /etc/os-release'
 		sh 'echo "Checking with netstat..."'
-                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_netstat = sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		if (!output_netstat.contains("[ OK ] Using 'netstat' for socket statistics.")) {
+                    error "Output validation failed"
+                }
 		sh 'echo "Installing iproute which contains ss command"'
 		sh 'yum -y install iproute'
 		sh 'echo "Checking with ss..."'
-                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_ss = sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		if (!output_ss.contains("[ OK ] Using 'ss' for socket statistics.")) {
+                    error "Output validation failed"
+                }
             }
         }
         stage('Docker AmazonLinux 2023 Staging') { 
@@ -226,11 +274,17 @@ pipeline {
 		sh 'apachectl configtest'
 		sh 'cat /etc/os-release'
 		sh 'echo "Checking with netstat..."'
-                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_netstat = sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		if (!output_netstat.contains("[ OK ] Using 'netstat' for socket statistics.")) {
+                    error "Output validation failed"
+                }
 		sh 'echo "Installing iproute which contains ss command"'
 		sh 'yum -y install iproute'
 		sh 'echo "Checking with ss..."'
-                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_ss = sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		if (!output_ss.contains("[ OK ] Using 'ss' for socket statistics.")) {
+                    error "Output validation failed"
+                }
             }
         }
         stage('Docker Ubuntu1804 Staging') { 
@@ -248,11 +302,17 @@ pipeline {
 		sh 'php -v'
 		sh 'cat /etc/os-release'
 		sh 'echo "Checking with netstat..."'
-                sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_netstat = sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		if (!output_netstat.contains("[ OK ] Using 'netstat' for socket statistics.")) {
+                    error "Output validation failed"
+                }
 		sh 'echo "Installing iproute2 which contains ss command"'
                 sh 'apt -y install iproute2'
 		sh 'echo "Checking with ss..."'
-                sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_ss = sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		if (!output_ss.contains("[ OK ] Using 'ss' for socket statistics.")) {
+                    error "Output validation failed"
+                }
             }
         }
         stage('Docker Ubuntu2004 Staging') { 
@@ -270,11 +330,17 @@ pipeline {
 		sh 'php -v'
 		sh 'cat /etc/os-release'
 		sh 'echo "Checking with netstat..."'
-                sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_netstat = sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		if (!output_netstat.contains("[ OK ] Using 'netstat' for socket statistics.")) {
+                    error "Output validation failed"
+                }
 		sh 'echo "Installing iproute2 which contains ss command"'
                 sh 'apt -y install iproute2'
 		sh 'echo "Checking with ss..."'
-                sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_ss = sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		if (!output_ss.contains("[ OK ] Using 'ss' for socket statistics.")) {
+                    error "Output validation failed"
+                }
             }
         }
         stage('Docker Ubuntu2204 Staging') { 
@@ -292,11 +358,17 @@ pipeline {
 		sh 'php -v'
 		sh 'cat /etc/os-release'
 		sh 'echo "Checking with netstat..."'
-                sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_netstat = sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		if (!output_netstat.contains("[ OK ] Using 'netstat' for socket statistics.")) {
+                    error "Output validation failed"
+                }
 		sh 'echo "Installing iproute2 which contains ss command"'
                 sh 'apt -y install iproute2'
 		sh 'echo "Checking with ss..."'
-                sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_ss = sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		if (!output_ss.contains("[ OK ] Using 'ss' for socket statistics.")) {
+                    error "Output validation failed"
+                }
             }
         }
         stage('Docker Ubuntu2404 Staging') { 
@@ -313,11 +385,17 @@ pipeline {
 		sh 'php -v'
 		sh 'cat /etc/os-release'
 		sh 'echo "Checking with netstat..."'
-                sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_netstat = sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		if (!output_netstat.contains("[ OK ] Using 'netstat' for socket statistics.")) {
+                    error "Output validation failed"
+                }
 		sh 'echo "Installing iproute2 which contains ss command"'
                 sh 'apt -y install iproute2'
 		sh 'echo "Checking with ss..."'
-                sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_ss = sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		if (!output_ss.contains("[ OK ] Using 'ss' for socket statistics.")) {
+                    error "Output validation failed"
+                }
             }
         }
         stage('Docker Debian 12 Staging') { 
@@ -334,11 +412,17 @@ pipeline {
 		sh 'php -v'
 		sh 'cat /etc/os-release'
 		sh 'echo "Checking with netstat..."'
-                sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_netstat = sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		if (!output_netstat.contains("[ OK ] Using 'netstat' for socket statistics.")) {
+                    error "Output validation failed"
+                }
 		sh 'echo "Installing iproute2 which contains ss command"'
                 sh 'apt -y install iproute2'
 		sh 'echo "Checking with ss..."'
-                sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+                def output_ss = sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		if (!output_ss.contains("[ OK ] Using 'ss' for socket statistics.")) {
+                    error "Output validation failed"
+                }
             }
         }
     } 
