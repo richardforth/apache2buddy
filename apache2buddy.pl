@@ -225,6 +225,9 @@ our $SKIPUPDATES = 0;
 # "cache" for os platform information: ( distro, version, codename )
 our @os_platform;
 
+# For ss and netstat
+our $ss_path;
+our $netstat_path;
 
 
 # grab the command line arguments
@@ -1703,9 +1706,9 @@ sub preflight_checks {
 
 	# Check 2.1
 	# this script uses ss and falls back to netstat to determine the port that apache is listening on
-	our $ss_path = `which ss 2>/dev/null`;
+	$ss_path = `which ss 2>/dev/null`;
         chomp($ss_path);
-        our $netstat_path = `which netstat 2>/dev/null`;
+        $netstat_path = `which netstat 2>/dev/null`;
         chomp($netstat_path);
 
         if ($ss_path) {
