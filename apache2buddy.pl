@@ -1676,6 +1676,7 @@ sub preflight_checks {
 	# make sure the script is being run as root.
 	# we need to run as root to ensure that we can access all of the appropriate
 	# files
+	my $command;
 	my $uid = `id -u`;
 	chomp($uid);
 
@@ -1827,9 +1828,9 @@ sub preflight_checks {
                         exit 1;
                 } else {
 			if ($ss_path) {
-                                  my $command = `$ss_path -plnt | egrep "httpd|apache2"`;
+                                 $command = `$ss_path -plnt | egrep "httpd|apache2"`;
 			} elsif ($netstat_path) {
-                                  my $command = `$netstat_path -plnt | egrep "httpd|apache2"`;
+                                 $command = `$netstat_path -plnt | egrep "httpd|apache2"`;
 			}
                         if ( $command =~ /:+(\d+)/ ) { our $real_port = $1 }
                         our $real_port;
@@ -1886,9 +1887,9 @@ sub preflight_checks {
 				our $apache_version = get_apache_version($process_name);
 				# also report what port apache is actually listening on.
 			        if ($ss_path) {
-                                          my $command = `$ss_path -plnt | egrep "httpd|apache2"`;
+                                         $command = `$ss_path -plnt | egrep "httpd|apache2"`;
                                 } elsif ($netstat_path) {
-                                          my $command = `$netstat_path -plnt | egrep "httpd|apache2"`;
+                                         $command = `$netstat_path -plnt | egrep "httpd|apache2"`;
 			        }
 				if ( $command =~ /:+(\d+)/ ) { our $real_port = $1 }
 				our $real_port;
