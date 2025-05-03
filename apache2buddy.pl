@@ -1087,8 +1087,11 @@ sub get_pid {
 
 	# find the pid for the software listening on the specified port. this
 	# might return multiple values depending on Apache's listen directives
-	my @pids = `LANGUAGE=en_GB.UTF-8 netstat -ntap | egrep "LISTEN" | grep \":$port \" | awk \'{ print \$7 }\' | cut -d / -f 1`;
-
+	if ($ss_path) {
+           my @pids = `LANGUAGE=en_GB.UTF-8 $ss_path -ntlp | awk '/:$port / && /LISTEN/ { print \$6 }' | cut -d= -f2 | cut -d, -f1`;
+        } elsif ($netstat_path) {
+	   my @pids = `LANGUAGE=en_GB.UTF-8 $netstat_path -ntap | egrep "LISTEN" | grep \":$port \" | awk \'{ print \$7 }\' | cut -d / -f 1`;
+        }
 	print "VERBOSE: ".@pids." found listening on port $port\n" if $main::VERBOSE;
 
 	# set an initial, invalid PID. 
@@ -1699,19 +1702,20 @@ sub preflight_checks {
 	}
 
 	# Check 2.1
-	# this script uses netstat to determine the port that apache is listening on
-	# process. make sure that netstat is available.
-	our $netstat = `which netstat`;
-	chomp($netstat);
+	# this script uses ss and falls back to netstat to determine the port that apache is listening on
+	my $ss_path = `which ss 2>/dev/null`;
+        chomp($ss_path);
+        my $netstat_path = `which netstat 2>/dev/null`;
+        chomp($netstat_path);
 
-	# make sure that netstat is available within our path
-	if ( $netstat !~ m/.*\/netstat/ ) { 
-		show_crit_box(); 
-		print "Unable to locate the netstat utility. This script requires netstat to determine the port that apache is listening on.\n";
-		show_info_box(); print "${YELLOW}To fix this make sure the net-tools package is installed.${ENDC}\n";
-		exit 1;
-	} else {
-		if ( ! $NOOK ) { show_ok_box(); print "The utility 'netstat' exists and is available for use: ${CYAN}$netstat${ENDC}\n" }
+        if ($ss_path) {
+            show_ok_box(); print "Using 'ss' for socket statistics.\n";
+        } elsif ($netstat_path) {
+            show_ok_box(); print "Using 'netstat' for socket statistics.\n";
+        } else {
+            show_crit_box(); print "Neither 'ss' nor 'netstat' is available. Please install one of them.\n";
+            show_info_box(); print "${YELLOW}To fix this make sure either the iproute2 or net-tools package is installed.${ENDC}\n";
+	    exit 1
         }
 
 	# Check 3
@@ -1819,7 +1823,11 @@ sub preflight_checks {
                         show_crit_box; print "apache process not found.\n";
                         exit 1;
                 } else {
-                        my $command = `netstat -plnt | egrep "httpd|apache2"`;
+			if ($ss_path) {
+                                  my $command = `$ss_path -plnt | egrep "httpd|apache2"`;
+			} elsif ($netstat_path) {
+                                  my $command = `$netstat_path -plnt | egrep "httpd|apache2"`;
+			}
                         if ( $command =~ /:+(\d+)/ ) { our $real_port = $1 }
                         our $real_port;
                         our $process_name = get_process_name($pid);
@@ -1874,7 +1882,11 @@ sub preflight_checks {
 				$process_name = get_process_name($pid);
 				our $apache_version = get_apache_version($process_name);
 				# also report what port apache is actually listening on.
-				my $command = `netstat -plnt | egrep "httpd|apache2"`;
+			        if ($ss_path) {
+                                          my $command = `$ss_path -plnt | egrep "httpd|apache2"`;
+                                } elsif ($netstat_path) {
+                                          my $command = `$netstat_path -plnt | egrep "httpd|apache2"`;
+			        }
 				if ( $command =~ /:+(\d+)/ ) { our $real_port = $1 }
 				our $real_port;
 				if ( ! $NOINFO ) { show_info_box; print "Apache is actually listening on port ${CYAN}$real_port${ENDC}\n" }
