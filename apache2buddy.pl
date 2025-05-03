@@ -1087,6 +1087,8 @@ sub get_pid {
 
 	# find the pid for the software listening on the specified port. this
 	# might return multiple values depending on Apache's listen directives
+	our $ss_path # Import the global variable for use
+	our $netstat_path # Import the global variable for use
 	if ($ss_path) {
            my @pids = `LANGUAGE=en_GB.UTF-8 $ss_path -ntlp | awk '/:$port / && /LISTEN/ { print \$6 }' | cut -d= -f2 | cut -d, -f1`;
         } elsif ($netstat_path) {
@@ -1703,9 +1705,9 @@ sub preflight_checks {
 
 	# Check 2.1
 	# this script uses ss and falls back to netstat to determine the port that apache is listening on
-	my $ss_path = `which ss 2>/dev/null`;
+	our $ss_path = `which ss 2>/dev/null`;
         chomp($ss_path);
-        my $netstat_path = `which netstat 2>/dev/null`;
+        our $netstat_path = `which netstat 2>/dev/null`;
         chomp($netstat_path);
 
         if ($ss_path) {
@@ -1823,6 +1825,8 @@ sub preflight_checks {
                         show_crit_box; print "apache process not found.\n";
                         exit 1;
                 } else {
+	                our $ss_path # Import the global variable for use
+	                our $netstat_path # Import the global variable for use
 			if ($ss_path) {
                                   my $command = `$ss_path -plnt | egrep "httpd|apache2"`;
 			} elsif ($netstat_path) {
@@ -1882,6 +1886,8 @@ sub preflight_checks {
 				$process_name = get_process_name($pid);
 				our $apache_version = get_apache_version($process_name);
 				# also report what port apache is actually listening on.
+	                        our $ss_path # Import the global variable for use
+	                        our $netstat_path # Import the global variable for use
 			        if ($ss_path) {
                                           my $command = `$ss_path -plnt | egrep "httpd|apache2"`;
                                 } elsif ($netstat_path) {
