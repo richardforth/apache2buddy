@@ -1087,8 +1087,6 @@ sub get_pid {
 
 	# find the pid for the software listening on the specified port. this
 	# might return multiple values depending on Apache's listen directives
-	our $ss_path # Import the global variable for use
-	our $netstat_path # Import the global variable for use
 	if ($ss_path) {
            my @pids = `LANGUAGE=en_GB.UTF-8 $ss_path -ntlp | awk '/:$port / && /LISTEN/ { print \$6 }' | cut -d= -f2 | cut -d, -f1`;
         } elsif ($netstat_path) {
