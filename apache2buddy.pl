@@ -1825,8 +1825,6 @@ sub preflight_checks {
                         show_crit_box; print "apache process not found.\n";
                         exit 1;
                 } else {
-	                our $ss_path # Import the global variable for use
-	                our $netstat_path # Import the global variable for use
 			if ($ss_path) {
                                   my $command = `$ss_path -plnt | egrep "httpd|apache2"`;
 			} elsif ($netstat_path) {
@@ -1886,8 +1884,6 @@ sub preflight_checks {
 				$process_name = get_process_name($pid);
 				our $apache_version = get_apache_version($process_name);
 				# also report what port apache is actually listening on.
-	                        our $ss_path # Import the global variable for use
-	                        our $netstat_path # Import the global variable for use
 			        if ($ss_path) {
                                           my $command = `$ss_path -plnt | egrep "httpd|apache2"`;
                                 } elsif ($netstat_path) {
