@@ -13,10 +13,10 @@ pipeline {
     }    
  
     stages {
-        stage('Mandatory Sleep') {
+        stage('Mandatory 2min Sleep') {
             steps {
-                echo 'Sleeping for 30 seconds...'
-                sleep time: 30, unit: 'SECONDS'
+                echo 'Sleeping for 2 minutes...'
+                sleep time: 2, unit: 'MINUTES'
             }
         }
         stage('Docker BitnamiApache Staging') { 
