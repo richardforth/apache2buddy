@@ -1095,6 +1095,7 @@ sub get_pid {
         } elsif ($netstat_path) {
 	   my @pids = `LANGUAGE=en_GB.UTF-8 $netstat_path -ntap | egrep "LISTEN" | grep \":$port \" | awk \'{ print \$7 }\' | cut -d / -f 1`;
         }
+	my @pids;
 	print "VERBOSE: ".@pids." found listening on port $port\n" if $main::VERBOSE;
 
 	# set an initial, invalid PID. 
