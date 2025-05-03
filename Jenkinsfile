@@ -67,7 +67,7 @@ pipeline {
 		    sh 'apachectl configtest'
 		    sh 'cat /etc/os-release'
 		    echo "Oracle Linux defaults to ss"
-		    echo "Checking with  ss..."
+		    echo "Checking with ss..."
                     def output_ss = sh(script: "/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n", returnStdout: true).trim()
 		    echo "Command output:\n${output_ss}"
                     if (!output_ss.contains("[ OK ] Using 'ss' for socket statistics.")) {
@@ -75,7 +75,7 @@ pipeline {
                     }
 		    echo "Removing iproute which contained ss command"
                     sh 'yum -y remove iproute'
-		    echo "installing net-tools" which includes netstat
+		    echo "installing net-tools which includes netstat"
                     sh 'yum -y install net-tools'
 		    echo "Testing with netstat..."
                     def output_netstat = sh(script: "/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n", returnStdout: true).trim()
@@ -112,7 +112,7 @@ pipeline {
                     }
 		    echo "Removing iproute which contained ss command"
                     sh 'yum -y remove iproute'
-		    echo "installing net-tools" which includes netstat
+		    echo "installing net-tools which includes netstat"
                     sh 'yum -y install net-tools'
 		    echo "Testing with netstat..."
                     def output_netstat = sh(script: "/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n", returnStdout: true).trim()
