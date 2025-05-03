@@ -1087,15 +1087,14 @@ sub test_process {
 # this will return the pid for the process listening on the port specified
 sub get_pid {
 	my ( $port ) = @_;
-
+        my @pids;
 	# find the pid for the software listening on the specified port. this
 	# might return multiple values depending on Apache's listen directives
 	if ($ss_path) {
-           my @pids = `LANGUAGE=en_GB.UTF-8 $ss_path -ntlp | awk '/:$port / && /LISTEN/ { print \$6 }' | cut -d= -f2 | cut -d, -f1`;
+           @pids = `LANGUAGE=en_GB.UTF-8 $ss_path -ntlp | awk '/:$port / && /LISTEN/ { print \$6 }' | cut -d= -f2 | cut -d, -f1`;
         } elsif ($netstat_path) {
-	   my @pids = `LANGUAGE=en_GB.UTF-8 $netstat_path -ntap | egrep "LISTEN" | grep \":$port \" | awk \'{ print \$7 }\' | cut -d / -f 1`;
+	   @pids = `LANGUAGE=en_GB.UTF-8 $netstat_path -ntap | egrep "LISTEN" | grep \":$port \" | awk \'{ print \$7 }\' | cut -d / -f 1`;
         }
-	my @pids;
 	print "VERBOSE: ".@pids." found listening on port $port\n" if $main::VERBOSE;
 
 	# set an initial, invalid PID. 
