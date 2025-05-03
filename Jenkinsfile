@@ -12,7 +12,13 @@ pipeline {
       buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '3')
     }    
  
-    stages { 
+    stages {
+        stage('Mandatory Sleep') {
+            steps {
+                echo 'Sleeping for 30 seconds...'
+                sleep time: 30, unit: 'SECONDS'
+            }
+        }
         stage('Docker BitnamiApache Staging') { 
             agent { 
                 docker {
