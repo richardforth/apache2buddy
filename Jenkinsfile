@@ -31,6 +31,11 @@ pipeline {
                 sh 'install_packages php'
 		sh 'php -v'
 		sh 'cat /etc/os-release'
+		sh 'echo "Checking with netstat..."'
+                sh '/opt/bitnami/apache/bin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		sh 'echo "installing iproute2 which contains ss..."'
+		sh 'install_packages iproute2'
+		sh 'echo "Checking with ss..."'
                 sh '/opt/bitnami/apache/bin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -50,6 +55,14 @@ pipeline {
 		sh 'sed -i \'s/^#LoadModule mpm_prefork_module/LoadModule mpm_prefork_module/\' /etc/httpd/conf.modules.d/00-mpm.conf'
 		sh 'apachectl configtest'
 		sh 'cat /etc/os-release'
+		sh 'echo "Oracle Linux defaults to ss"'
+		sh 'echo "Checking with  ss..."'
+                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		sh 'echo "Removing iproute2 which contained ss command"'
+                sh 'yum -y remove iproute2'
+		sh 'echo "installing net-tools" which includes netstat'
+                sh 'yum -y install net-tools'
+		sh 'echo "Testing with netstat..."'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -69,6 +82,14 @@ pipeline {
 		sh 'sed -i \'s/^#LoadModule mpm_prefork_module/LoadModule mpm_prefork_module/\' /etc/httpd/conf.modules.d/00-mpm.conf'
 		sh 'apachectl configtest'
 		sh 'cat /etc/os-release'
+		sh 'echo "Oracle Linux defaults to ss"'
+		sh 'echo "Checking with  ss..."'
+                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		sh 'echo "Removing iproute2 which contained ss command"'
+                sh 'yum -y remove iproute2'
+		sh 'echo "installing net-tools" which includes netstat'
+                sh 'yum -y install net-tools'
+		sh 'echo "Testing with netstat..."'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -87,6 +108,11 @@ pipeline {
 		sh 'sed -i \'s/^#LoadModule mpm_prefork_module/LoadModule mpm_prefork_module/\' /etc/httpd/conf.modules.d/00-mpm.conf'
 		sh 'apachectl configtest'
 		sh 'cat /etc/os-release'
+		sh 'echo "Checking with netstat..."'
+                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		sh 'echo "Installing iproute2 which contains ss command"'
+		sh 'yum -y install iproute2'
+		sh 'echo "Checking with ss..."'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -105,6 +131,11 @@ pipeline {
 		sh 'sed -i \'s/^#LoadModule mpm_prefork_module/LoadModule mpm_prefork_module/\' /etc/httpd/conf.modules.d/00-mpm.conf'
 		sh 'apachectl configtest'
 		sh 'cat /etc/os-release'
+		sh 'echo "Checking with netstat..."'
+                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		sh 'echo "Installing iproute2 which contains ss command"'
+		sh 'yum -y install iproute2'
+		sh 'echo "Checking with ss..."'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -124,6 +155,11 @@ pipeline {
 		sh 'sed -i \'s/^#LoadModule mpm_prefork_module/LoadModule mpm_prefork_module/\' /etc/httpd/conf.modules.d/00-mpm.conf'
 		sh 'apachectl configtest'
 		sh 'cat /etc/os-release'
+		sh 'echo "Checking with netstat..."'
+                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		sh 'echo "Installing iproute2 which contains ss command"'
+		sh 'yum -y install iproute2'
+		sh 'echo "Checking with ss..."'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -143,6 +179,11 @@ pipeline {
 		sh 'sed -i \'s/^#LoadModule mpm_prefork_module/LoadModule mpm_prefork_module/\' /etc/httpd/conf.modules.d/00-mpm.conf'
 		sh 'apachectl configtest'
 		sh 'cat /etc/os-release'
+		sh 'echo "Checking with netstat..."'
+                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		sh 'echo "Installing iproute2 which contains ss command"'
+		sh 'yum -y install iproute2'
+		sh 'echo "Checking with ss..."'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -161,6 +202,11 @@ pipeline {
 		sh 'sed -i \'s/^#LoadModule mpm_prefork_module/LoadModule mpm_prefork_module/\' /etc/httpd/conf.modules.d/00-mpm.conf'
 		sh 'apachectl configtest'
 		sh 'cat /etc/os-release'
+		sh 'echo "Checking with netstat..."'
+                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		sh 'echo "Installing iproute2 which contains ss command"'
+		sh 'yum -y install iproute2'
+		sh 'echo "Checking with ss..."'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -179,6 +225,11 @@ pipeline {
 		sh 'sed -i \'s/^#LoadModule mpm_prefork_module/LoadModule mpm_prefork_module/\' /etc/httpd/conf.modules.d/00-mpm.conf'
 		sh 'apachectl configtest'
 		sh 'cat /etc/os-release'
+		sh 'echo "Checking with netstat..."'
+                sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		sh 'echo "Installing iproute2 which contains ss command"'
+		sh 'yum -y install iproute2'
+		sh 'echo "Checking with ss..."'
                 sh '/usr/sbin/httpd -k start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -193,8 +244,14 @@ pipeline {
             steps {
                 sh 'apt-get update'
                 sh 'apt -y install php'
+
 		sh 'php -v'
 		sh 'cat /etc/os-release'
+		sh 'echo "Checking with netstat..."'
+                sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		sh 'echo "Installing iproute2 which contains ss command"'
+                sh 'apt -y install iproute2'
+		sh 'echo "Checking with ss..."'
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -209,8 +266,14 @@ pipeline {
             steps {
                 sh 'apt-get update'
                 sh 'apt -y install php'
+                sh 'apt -y install iproute2'
 		sh 'php -v'
 		sh 'cat /etc/os-release'
+		sh 'echo "Checking with netstat..."'
+                sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		sh 'echo "Installing iproute2 which contains ss command"'
+                sh 'apt -y install iproute2'
+		sh 'echo "Checking with ss..."'
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -225,8 +288,14 @@ pipeline {
             steps {
                 sh 'apt-get update'
                 sh 'apt -y install php'
+                sh 'apt -y install iproute2'
 		sh 'php -v'
 		sh 'cat /etc/os-release'
+		sh 'echo "Checking with netstat..."'
+                sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		sh 'echo "Installing iproute2 which contains ss command"'
+                sh 'apt -y install iproute2'
+		sh 'echo "Checking with ss..."'
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -243,6 +312,11 @@ pipeline {
                 sh 'apt -y install php'
 		sh 'php -v'
 		sh 'cat /etc/os-release'
+		sh 'echo "Checking with netstat..."'
+                sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		sh 'echo "Installing iproute2 which contains ss command"'
+                sh 'apt -y install iproute2'
+		sh 'echo "Checking with ss..."'
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
@@ -259,6 +333,11 @@ pipeline {
                 sh 'apt -y install php'
 		sh 'php -v'
 		sh 'cat /etc/os-release'
+		sh 'echo "Checking with netstat..."'
+                sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
+		sh 'echo "Installing iproute2 which contains ss command"'
+                sh 'apt -y install iproute2'
+		sh 'echo "Checking with ss..."'
                 sh 'service apache2 start && curl -sL https://raw.githubusercontent.com/richardforth/apache2buddy/staging/apache2buddy.pl | perl - -n'
             }
         }
