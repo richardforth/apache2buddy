@@ -38,7 +38,7 @@ Note that CentOS is now removed from support and no longer tested against, as it
 
 ## Gentoo
 
-[![Generic badge](https://img.shields.io/badge/Gentoo-Works%20with%20dash%20O$20Option-yellow.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/Gentoo-Works%20with%20dash%20O%20Option-yellow.svg)](https://shields.io/)
 
 
 The rule of thumb is if its not listed, its not supported.
