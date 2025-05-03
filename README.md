@@ -8,37 +8,37 @@
 Red Hat is Licenced so I am unable to test it, but it is technically supported -  testing is done via OracleLinux, Rocky and Alma.
 Note that CentOS is now removed from support and no longer tested against, as it is deprecated, but you  can try with -O to skip OS os checks.
 
- [![Generic badge](https://img.shields.io/badge/RHEL-Unable%20To%20Test-Red.svg)](https://shields.io/)
+ [![Generic badge](https://img.shields.io/badge/RHEL-Unable%20To%20Test-red.svg)](https://shields.io/)
 
- [![Generic badge](https://img.shields.io/badge/Centos-Removed-Red.svg)](https://shields.io/)
+ [![Generic badge](https://img.shields.io/badge/Centos-Removed-red.svg)](https://shields.io/)
 
- [![Generic badge](https://img.shields.io/badge/Oracle%20Linux%208-Passing-Green.svg)](https://shields.io/)
- [![Generic badge](https://img.shields.io/badge/Oracle%20Linux%209-Passing-Green.svg)](https://shields.io/)
+ [![Generic badge](https://img.shields.io/badge/Oracle%20Linux%208-Passing-green.svg)](https://shields.io/)
+ [![Generic badge](https://img.shields.io/badge/Oracle%20Linux%209-Passing-green.svg)](https://shields.io/)
 
- [![Generic badge](https://img.shields.io/badge/Rocky%20Linux%208-Passing-Green.svg)](https://shields.io/)
- [![Generic badge](https://img.shields.io/badge/Rocky%20Linux%209-Passing-Green.svg)](https://shields.io/)
+ [![Generic badge](https://img.shields.io/badge/Rocky%20Linux%208-Passing-green.svg)](https://shields.io/)
+ [![Generic badge](https://img.shields.io/badge/Rocky%20Linux%209-Passing-green.svg)](https://shields.io/)
 
- [![Generic badge](https://img.shields.io/badge/AlmaLinux%208-Passing-Green.svg)](https://shields.io/)
- [![Generic badge](https://img.shields.io/badge/AlmaLinux%209-Passing-Green.svg)](https://shields.io/)
+ [![Generic badge](https://img.shields.io/badge/AlmaLinux%208-Passing-green.svg)](https://shields.io/)
+ [![Generic badge](https://img.shields.io/badge/AlmaLinux%209-Passing-green.svg)](https://shields.io/)
 
- [![Generic badge](https://img.shields.io/badge/AmazonLinux%202-Passing-Green.svg)](https://shields.io/)
- [![Generic badge](https://img.shields.io/badge/AmazonLinux%202023-Passing-Green.svg)](https://shields.io/)
+ [![Generic badge](https://img.shields.io/badge/AmazonLinux%202-Passing-green.svg)](https://shields.io/)
+ [![Generic badge](https://img.shields.io/badge/AmazonLinux%202023-Passing-green.svg)](https://shields.io/)
 
 ## Ubuntu
 
-[![Generic badge](https://img.shields.io/badge/Ubuntu%2018.04-Passing-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Ubuntu%2020.04-Passing-Green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Ubuntu%2022.04-Passing-Green.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/Ubuntu%2018.04-Passing-green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Ubuntu%2020.04-Passing-green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Ubuntu%2022.04-Passing-green.svg)](https://shields.io/)
 
 ## Debian
 
-[![Generic badge](https://img.shields.io/badge/Debian%2012-Passing-Green.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/Debian%2012-Passing-green.svg)](https://shields.io/)
 
 ## Bitnami (apache)
 
-[![Generic badge](https://img.shields.io/badge/Bitnami%20apache-Passing-Green.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/Bitnami%20apache-Passing-green.svg)](https://shields.io/)
 
 ## Gentoo
 
-[![Generic badge](https://img.shields.io/badge/Gentoo-Works%20with%20dash%20O$20Option-Yellow.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/Gentoo-Works%20with%20dash%20O$20Option-yellow.svg)](https://shields.io/)
 
 
 The rule of thumb is if its not listed, its not supported.
